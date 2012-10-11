@@ -235,10 +235,25 @@ void HandleKeys()
       // Create a new missile sprite
       RECT  rcBounds = { 0, 0, 600, 450 };
       RECT  rcPos = _pCarSprite->GetPosition();
-      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
+      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_BOUNCE);
       pSprite->SetPosition(rcPos.left + 15, 400);
       pSprite->SetVelocity(0, -7);
       _pGame->AddSprite(pSprite);
+	  
+//	  RECT  rcBounds = { 0, 0, 600, 450 };
+ //     RECT  rcPos = _pCarSprite->GetPosition();
+      /*Sprite* */pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_BOUNCE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(6, -5);
+      _pGame->AddSprite(pSprite);
+
+//	  RECT  rcBounds = { 0, 0, 600, 450 };
+ //     RECT  rcPos = _pCarSprite->GetPosition();
+      /*Sprite**/ pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_BOUNCE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(-6, -5);
+      _pGame->AddSprite(pSprite);
+
 
       // Play the missile (fire) sound
       PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
