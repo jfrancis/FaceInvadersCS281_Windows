@@ -55,6 +55,15 @@ public class StarryBackground extends Background
 	public void Draw(/*TODO: put some graphics handle object here*/
 					 Object someGraphicsHandle)
 	{
-		// TODO
+		// TODO: Implement graphics code
+		
+		// Draw the solid black background
+		// TODO: Code to draw background
+		
+		// Draw the stars
+		for (int i = 0; i < mNumStars; i++)
+		{
+			// TODO: Code to draw the stars
+		}
 	}
 }

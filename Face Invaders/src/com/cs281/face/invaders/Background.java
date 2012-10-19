@@ -3,11 +3,12 @@ package com.cs281.face.invaders;
 import android.graphics.*;
 
 public class Background {
+	
 	// Member Variables
 	protected int mWidth;
 	protected int mHeight;
 	protected int mColor;
-	protected Bitmap mBitmap; // TODO: Not sure if this is the proper Bitmap class to use
+	protected Bitmap mBitmap;
 	
 	
 	// Constructors
@@ -19,8 +20,7 @@ public class Background {
 		mBitmap = null;
 	}
 	
-	public Background(/* TODO: Not sure this is the proper Bitmap class to use,
-					   * but it exists...*/ Bitmap bmp)
+	public Background(Bitmap bmp)
 	{
 		mColor = 0;
 		mBitmap = bmp;
@@ -38,7 +38,17 @@ public class Background {
 	public void Draw(/*TODO: put some graphics handle object here*/
 					 Object someGraphicsHandle)
 	{
-		// TODO
+		// TODO: Implement graphics code
+		
+		// Draw the background
+		if (mBitmap != null)
+		{
+			// TODO: Code to draw bitmap
+		}
+		else
+		{
+			// TODO: Code to draw filled rectangle
+		}
 	}
 	
 	

@@ -37,16 +37,18 @@ public class AlienSprite extends Sprite {
 		Rect rcPos = GetPosition();
 		
 		Sprite sprite = null;
-		if (GetBitmap == pBlobboBitmap) // TODO: create global variable pBlobboBitmap, as well as all global variables following
+		if (GetBitmap() == pBlobboBitmap) // TODO: create global variable pBlobboBitmap, as well as all global variables following
 		{
 			// Blobbo missile
-			sprite = new Sprite(pBMissileBitmap, rcBounds, BOUNDSACTION.BA_DIE);
+			sprite = new Sprite(pBMissileBitmap, rcBounds, 
+								BOUNDSACTION.BA_DIE);
 			sprite.SetVelocity(0, 7);
 		}
-		else if (GetBitmap == pJellyBitmap)
+		else if (GetBitmap() == pJellyBitmap)
 		{
 			// Jelly missile
-			sprite = new Sprite(pJMissileBitmap, rcBounds, BA_DIE);
+			sprite = new Sprite(pJMissileBitmap, rcBounds, 
+								BOUNDSACTION.BA_DIE);
 			sprite.SetVelocity(0, 5);
 		}
 		else
