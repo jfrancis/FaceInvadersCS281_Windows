@@ -41,6 +41,8 @@ Bitmap*           _pGameOverBitmap;
 StarryBackground* _pBackground;
 Sprite*           _pCarSprite;
 int               _iFireInputDelay;
+//Daniel Change
+int				  movementDelay;
 int               _iNumLives, _iScore, _iDifficulty;
 BOOL              _bGameOver;
 int               _iGameOverDelay;

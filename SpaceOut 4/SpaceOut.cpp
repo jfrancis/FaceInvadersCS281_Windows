@@ -11,6 +11,24 @@
 //-----------------------------------------------------------------
 // Game Engine Functions
 //-----------------------------------------------------------------
+
+//Global variables added by Daniel Dudugjian
+//These serve as flags to modify the game when powerups are used.
+/*Spread shot powerup.
+Good music.
+Extra Life powerup.
+Invulnerability.
+Bouncing bullet powerup.
+Laser powerup.
+Shields.
+Explosive Missile.*/
+BOOL spreadShot = 0;
+BOOL bouncingBullet = 0;
+BOOL warpingBullet = 0;
+BOOL piercingBullet = 0;
+BOOL explosiveBullet = 0;
+
+
 BOOL GameInitialize(HINSTANCE hInstance)
 {
   // Create the game engine
@@ -216,22 +234,102 @@ void HandleKeys()
   {
     // Move the car based upon left/right key presses
     POINT ptVelocity = _pCarSprite->GetVelocity();
-    if (GetAsyncKeyState(VK_LEFT) < 0)
+    if ((++movementDelay > 2) && GetAsyncKeyState(VK_LEFT) < 0)
     {
       // Move left
-      ptVelocity.x = max(ptVelocity.x - 1, -4);
-      _pCarSprite->SetVelocity(ptVelocity);
+    //  ptVelocity.x = max(ptVelocity.x - 1, -4);
+       if (ptVelocity.x > 0)
+	   {
+		   ptVelocity.x = 0;
+	   }else
+	   {
+		   ptVelocity.x = -5;
+	   }
+		_pCarSprite->SetVelocity(ptVelocity);
+		movementDelay = 0;
     }
-    else if (GetAsyncKeyState(VK_RIGHT) < 0)
+    else if ((++movementDelay > 2) && GetAsyncKeyState(VK_RIGHT) < 0)
     {
       // Move right
-      ptVelocity.x = min(ptVelocity.x + 2, 6);
-      _pCarSprite->SetVelocity(ptVelocity);
+//      ptVelocity.x = min(ptVelocity.x + 2, 6);
+	 if (ptVelocity.x < 0)
+	   {
+		   ptVelocity.x = 0;
+	   }else
+	   {
+		   ptVelocity.x = 5;
+	   }
+		
+		_pCarSprite->SetVelocity(ptVelocity);
+		movementDelay = 0;
     }
 
     // Fire missiles based upon spacebar presses
     if ((++_iFireInputDelay > 6) && GetAsyncKeyState(VK_SPACE) < 0)
     {
+		if (spreadShot)
+		{
+			 // Create a new missile sprite
+      RECT  rcBounds = { 0, 0, 600, 450 };
+      RECT  rcPos = _pCarSprite->GetPosition();
+      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(0, -7);
+      _pGame->AddSprite(pSprite);
+
+	  pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(-3, -4);
+      _pGame->AddSprite(pSprite);
+
+	  pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(3, -4);
+      _pGame->AddSprite(pSprite);
+
+
+      // Play the missile (fire) sound
+      PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
+        SND_RESOURCE | SND_NOSTOP);
+
+      // Reset the input delay
+      _iFireInputDelay = 0;
+
+		}else if (bouncingBullet)
+		{
+			 // Create a new missile sprite
+      RECT  rcBounds = { 0, 0, 600, 450 };
+      RECT  rcPos = _pCarSprite->GetPosition();
+      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_BOUNCE);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(0, -7);
+      _pGame->AddSprite(pSprite);
+
+      // Play the missile (fire) sound
+      PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
+        SND_RESOURCE | SND_NOSTOP);
+
+      // Reset the input delay
+      _iFireInputDelay = 0;
+
+		}else if (warpingBullet)
+		{
+			 // Create a new missile sprite
+      RECT  rcBounds = { 0, 0, 600, 450 };
+      RECT  rcPos = _pCarSprite->GetPosition();
+      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_WRAP);
+      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetVelocity(0, -7);
+      _pGame->AddSprite(pSprite);
+
+      // Play the missile (fire) sound
+      PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
+        SND_RESOURCE | SND_NOSTOP);
+
+      // Reset the input delay
+      _iFireInputDelay = 0;
+		}else
+		{
       // Create a new missile sprite
       RECT  rcBounds = { 0, 0, 600, 450 };
       RECT  rcPos = _pCarSprite->GetPosition();
@@ -246,7 +344,8 @@ void HandleKeys()
 
       // Reset the input delay
       _iFireInputDelay = 0;
-    }
+		}
+    }      
   }
 
   // Start a new game based upon an Enter (Return) key press
@@ -295,9 +394,21 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
       SND_RESOURCE);
 
     // Kill both sprites
+	if (piercingBullet)
+	{
+		if (pHitter == _pMissileBitmap)
+		{
+			pSpriteHittee->Kill();
+		}else
+		{
+			pSpriteHitter->Kill();
+		}
+
+	}else
+	{
     pSpriteHitter->Kill();
     pSpriteHittee->Kill();
-
+	}
     // Create a large explosion sprite at the alien's position
     RECT rcBounds = { 0, 0, 600, 450 };
     RECT rcPos;
