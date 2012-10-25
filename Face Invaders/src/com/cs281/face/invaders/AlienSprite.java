@@ -22,7 +22,7 @@ public class AlienSprite extends Sprite {
 		
 		// See if the alien should fire a missile
 		Random rand = new Random();
-		if (rand.nextInt(MainActivity.gDifficulty / 2) == 0) // TODO: create global variable iDifficulty
+		if (rand.nextInt(MainActivity.gDifficulty / 2) == 0)
 		{
 			saSpriteAction |= SA_ADDSPRITE;
 		}
@@ -37,7 +37,7 @@ public class AlienSprite extends Sprite {
 		Rect rcPos = GetPosition();
 		
 		Sprite sprite = null;
-		if (GetBitmap() == MainActivity.gBlobboBitmap) // TODO: create global variable pBlobboBitmap, as well as all global variables following
+		if (GetBitmap() == MainActivity.gBlobboBitmap)
 		{
 			// Blobbo missile
 			sprite = new Sprite(MainActivity.gBMissileBitmap, rcBounds, 

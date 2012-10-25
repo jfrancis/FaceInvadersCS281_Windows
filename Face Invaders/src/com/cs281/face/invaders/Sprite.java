@@ -271,20 +271,29 @@ public class Sprite {
 		return null;
 	}
 	
-	public final void Draw(Object drawObject/*Replace with appropriate object type*/)
+	public final void Draw(Canvas canvas)
 	{
-		// TODO: Not fully implemented
 		
 		if (mBitmap != null && !mHidden)
 		{
 			// Draw the appropriate frame, if necessary
 			if (mNumFrames == 1)
 			{
-				// TODO: Code to draw bitmap
+				canvas.drawBitmap(mBitmap, mRcPosition.left,
+								  mRcPosition.right, null);
 			}
 			else
 			{
-				// TODO: Code to draw bitmap
+				canvas.drawBitmap(mBitmap, 
+						          new Rect(mCurFrame * GetWidth(), 0,
+						        		   mCurFrame * GetWidth() + GetWidth(),
+						        		   GetHeight()),
+						          new Rect(mRcPosition.left, 
+						        		   mRcPosition.top,
+						        		   mRcPosition.left + GetWidth(),
+						        		   mRcPosition.top + GetHeight()
+						        		   ),
+						          null);
 			}
 		}
 	}

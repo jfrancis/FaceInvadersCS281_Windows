@@ -1,6 +1,8 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
+import android.graphics.Paint.Style;
+
 import java.util.Random;
 
 public class StarryBackground extends Background
@@ -52,18 +54,20 @@ public class StarryBackground extends Background
 	}
 	
 	@Override
-	public void Draw(/*TODO: put some graphics handle object here*/
-					 Object someGraphicsHandle)
+	public void Draw(Canvas canvas)
 	{
-		// TODO: Implement graphics code
-		
 		// Draw the solid black background
-		// TODO: Code to draw background
+		Rect rect = new Rect(0, 0, mWidth, mHeight);
+		Paint paint = new Paint();
+		paint.setColor(0);
+		paint.setStyle(Style.FILL);
+		canvas.drawRect(rect, paint);
 		
 		// Draw the stars
 		for (int i = 0; i < mNumStars; i++)
 		{
-			// TODO: Code to draw the stars
+			paint.setColor(mStarColors[i]);
+			canvas.drawPoint(mPtStars[i].x, mPtStars[i].y, paint);
 		}
 	}
 }

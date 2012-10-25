@@ -1,19 +1,24 @@
 // John
 package com.cs281.face.invaders;
 
-import com.cs281.face.invaders.Sprite.BOUNDSACTION;
-
 import android.os.Bundle;
 import android.graphics.*;
+import android.graphics.Paint.Align;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 import java.util.Random;
+
+import com.cs281.face.invaders.Sprite.BOUNDSACTION;
+import com.cs281.face.invaders.R;
 
 public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        mContext = this.getApplicationContext();
         setContentView(R.layout.activity_main);
     }
 
@@ -23,6 +28,9 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    
+    // Added to allow loading of Bitmaps. May be a better way
+    private static Context mContext;
     /**
      * Code from SpaceOut.cpp. TODO: Should this be in this class???
      */
@@ -92,23 +100,37 @@ public class MainActivity extends Activity {
 		// Read the hi scores
 		ReadHiScores();
 		
-		// TODO: Create offscreen bitmap???
+		// TODO: Create offscreen bitmap??? May need to if graphics flicker
 		
-		// TODO: Load all of the bitmaps, possibly using BitmapFactory
-//		gSplashBitmap = BitmapFactory.
-//		gDesertBitmap = BitmapFactory.
-//		gCarBitmap = BitmapFactory.
-//		gSmCarBitmap = BitmapFactory.
-//		gMissileBitmap = BitmapFactory.
-//		gBlobboBitmap = BitmapFactory.
-//		gBMissileBitmap = BitmapFactory.
-//		gJellyBitmap = BitmapFactory.
-//		gJMissileBitmap = BitmapFactory.
-//		gTimmyBitmap = BitmapFactory.
-//		gTMissileBitmap = BitmapFactory.
-//		gSmExplosionBitmap = BitmapFactory.
-//		gLgExplosionBitmap = BitmapFactory.
-//		gGameOverBitmap = BitmapFactory.
+		// Load the Bitmaps
+		gSplashBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													 R.drawable.ic_hamm);
+		gDesertBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									 R.drawable.ic_hamm);
+		gCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+												  R.drawable.ic_hamm);
+		gSmCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													R.drawable.ic_hamm);
+		gMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													  R.drawable.ic_hamm);
+		gBlobboBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													 R.drawable.ic_hamm);
+		gBMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									   R.drawable.ic_hamm);
+		gJellyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									R.drawable.ic_hamm);
+		gJMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													   R.drawable.ic_hamm);
+		gTimmyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									R.drawable.ic_hamm);
+		gTMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									   R.drawable.ic_hamm);
+		gSmExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+														  R.drawable.ic_hamm);
+		gLgExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+														  R.drawable.ic_hamm);
+		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+				 									   R.drawable.ic_hamm);
 		
 		gBackground = new StarryBackground(600, 450, 100, 50);
 		
@@ -150,45 +172,65 @@ public class MainActivity extends Activity {
 	}
 	
 	// TODO: Add Android specific drawing code
-	public final static void GamePaint()
+	public final static void GamePaint(Canvas canvas)
 	{
 		// Draw the background
-		gBackground.Draw(null);
+		gBackground.Draw(canvas);
 		
 		// Draw the desert bitmap
-		// TODO: Draw gDesertBitmap
+		canvas.drawBitmap(gDesertBitmap, 0, 371, null);
 		
 		// Draw the sprites
-		gGame.DrawSprites(null);
+		gGame.DrawSprites(canvas);
+		
+		
+		Paint textPaint = new Paint();
+		textPaint.setTypeface(Typeface.DEFAULT);
+		textPaint.setColor(Color.WHITE);
 		
 		if (gDemo)
 		{
 			// Draw the splash screen image
-			// TODO: Draw gSplahBitmap
+			canvas.drawBitmap(gSplashBitmap, 142, 20, null);
 			
 			// Draw the hi scores
-			// TODO: Android drawing code
+			int x = 275;
+			int y = 230;
+			
+			textPaint.setTextAlign(Align.CENTER);
+			
+			for (int i = 0; i < 5; i++)
+			{
+				String text = String.format("%d", gHiScores[i]);
+				canvas.drawText(text, x, y, textPaint);
+				
+				y += 20;
+			}
 		}
 		else
 		{
 			// Draw the score
-			// TODO: Android code
+			String text = String.format("%d", gScore);
+			textPaint.setTextAlign(Align.RIGHT);
+			canvas.drawText(text, 460, 0, textPaint)
 			
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
 			{
-				// TODO: Android code
+				canvas.drawBitmap(gSmCarBitmap, 520 + 
+								  (gSmCarBitmap.getWidth() * i),
+								  10, null);
 			}
 			
 			// Draw the game over message if necessary
 			if (gGameOver)
 			{
-				// TODO: Android code
+				canvas.drawBitmap(gGameOverBitmap, 170, 100, null);
 			}
 		}
 	}
 	
-	public final static void GameCycle()
+	public final static void GameCycle(Canvas canvas)
 	{
 		if (!gGameOver)
 		{
@@ -208,7 +250,7 @@ public class MainActivity extends Activity {
 			// Update the sprites
 			gGame.UpdateSprites();
 			
-			// TODO: Android specific drawing code
+			GamePaint(canvas);
 		}
 		else
 		{

@@ -1,6 +1,7 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
+import android.graphics.Paint.Style;
 
 public class Background {
 	
@@ -35,19 +36,20 @@ public class Background {
 		// Do nothing (the original code actually does nothing here!)
 	}
 	
-	public void Draw(/*TODO: put some graphics handle object here*/
-					 Object someGraphicsHandle)
+	public void Draw(Canvas canvas)
 	{
-		// TODO: Implement graphics code
-		
 		// Draw the background
 		if (mBitmap != null)
 		{
-			// TODO: Code to draw bitmap
+			canvas.drawBitmap(mBitmap, 0, 0, null);
 		}
 		else
 		{
-			// TODO: Code to draw filled rectangle
+			Rect rect = new Rect(0, 0, mWidth, mHeight);
+			Paint paint = new Paint();
+			paint.setColor(mColor);
+			paint.setStyle(Style.FILL);
+			canvas.drawRect(rect, paint);
 		}
 	}
 	
