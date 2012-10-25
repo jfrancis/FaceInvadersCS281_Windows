@@ -22,7 +22,7 @@ public class AlienSprite extends Sprite {
 		
 		// See if the alien should fire a missile
 		Random rand = new Random();
-		if (rand.nextInt(iDifficulty / 2 == 0)) // TODO: create global variable iDifficulty
+		if (rand.nextInt(MainActivity.gDifficulty / 2) == 0) // TODO: create global variable iDifficulty
 		{
 			saSpriteAction |= SA_ADDSPRITE;
 		}
@@ -37,24 +37,25 @@ public class AlienSprite extends Sprite {
 		Rect rcPos = GetPosition();
 		
 		Sprite sprite = null;
-		if (GetBitmap() == pBlobboBitmap) // TODO: create global variable pBlobboBitmap, as well as all global variables following
+		if (GetBitmap() == MainActivity.gBlobboBitmap) // TODO: create global variable pBlobboBitmap, as well as all global variables following
 		{
 			// Blobbo missile
-			sprite = new Sprite(pBMissileBitmap, rcBounds, 
+			sprite = new Sprite(MainActivity.gBMissileBitmap, rcBounds, 
 								BOUNDSACTION.BA_DIE);
 			sprite.SetVelocity(0, 7);
 		}
-		else if (GetBitmap() == pJellyBitmap)
+		else if (GetBitmap() == MainActivity.gJellyBitmap)
 		{
 			// Jelly missile
-			sprite = new Sprite(pJMissileBitmap, rcBounds, 
+			sprite = new Sprite(MainActivity.gJMissileBitmap, rcBounds, 
 								BOUNDSACTION.BA_DIE);
 			sprite.SetVelocity(0, 5);
 		}
 		else
 		{
 			// Timmy missile
-			sprite = new Sprite(pTMissileBitmap, rcBounds, BA_DIE);
+			sprite = new Sprite(MainActivity.gTMissileBitmap, rcBounds, 
+					            BOUNDSACTION.BA_DIE);
 			sprite.SetVelocity(0, 3);
 		}
 		
