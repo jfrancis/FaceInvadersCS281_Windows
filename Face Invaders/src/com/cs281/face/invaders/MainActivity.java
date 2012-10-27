@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 	
 	public final static boolean GameInitialize()
 	{
-		gGame = new GameEngine(/*TODO: Fill in parameters*/);
+		gGame = new GameEngine(640, 480); // TODO: Put in appropriate numbers here
 		if (gGame == null)
 		{
 			return false;
@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 	public final static void GameEnd()
 	{
 		// TODO: This line may change for the Android platform
-		gGame.CloseMIDIPlayer();
+		//gGame.CloseMIDIPlayer();
 		
 		// TODO: Is this necessary since Java does Garbage Collection???
 		gGame.CleanupSprites();
@@ -157,7 +157,8 @@ public class MainActivity extends Activity {
 		if (!gDemo)
 		{
 			// Resume the background music
-			gGame.PlayMIDISong("", false);
+			// TODO: Add Android sound code
+			//gGame.PlayMIDISong("", false);
 		}
 	}
 	
@@ -167,7 +168,8 @@ public class MainActivity extends Activity {
 		if (!gDemo)
 		{
 			// Pause the background music
-			gGame.PauseMIDISong();
+			// TODO: Add Android sound code
+			//gGame.PauseMIDISong();
 		}
 	}
 	
@@ -212,7 +214,7 @@ public class MainActivity extends Activity {
 			// Draw the score
 			String text = String.format("%d", gScore);
 			textPaint.setTextAlign(Align.RIGHT);
-			canvas.drawText(text, 460, 0, textPaint)
+			canvas.drawText(text, 460, 0, textPaint);
 			
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
@@ -257,7 +259,8 @@ public class MainActivity extends Activity {
 			if (--gGameOverDelay == 0)
 			{
 				// Stop the music and switch to demo mode
-				gGame.PauseMIDISong();
+				// TODO: Add Android sound code
+				//gGame.PauseMIDISong();
 				gDemo = true;
 				NewGame();
 			}
@@ -307,7 +310,7 @@ public class MainActivity extends Activity {
 			// Fire missiles based upon button press
 			if ((++gFireInputDelay > 6) && SPACEPRESSED /*TODO: Replace*/)
 			{
-				if (spreadShot)
+				if (gSpreadShot)
 				{
 					// Create a new missile sprite
 					Rect rcBounds = new Rect(0, 0, 600, 450);
@@ -585,7 +588,7 @@ public class MainActivity extends Activity {
 	{	  
 		// Create a new random alien sprite
 		Rect rcBounds = new Rect(0, 0, 600, 410);
-		AlienSprite sprite;
+		AlienSprite sprite = null;
 		
 		Random rand = new Random();
 		switch(rand.nextInt(3))
@@ -648,11 +651,13 @@ public class MainActivity extends Activity {
 	public final static boolean ReadHiScores()
 	{
 		// TODO: Android code to read hi scores from a file
+		return false;
 	}
 	
 	public final static boolean WriteHiScores()
 	{
 		// TODO: Android code to write hi scores to a file
+		return false;
 	}
 	
 	
