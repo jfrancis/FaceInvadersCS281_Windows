@@ -28,7 +28,25 @@ public class GameEngine
 	// Helper Methods
 	protected boolean CheckSpriteCollision(Sprite testSprite)
 	{
-		return false; // TODO: Fill in
+		int vectorSize = m_vSprites.size();//makes code slightly faster
+		for(int i = 0; i < vectorSize; ++i)
+		{
+			if(testSprite == m_vSprites.get(i))
+			{
+				//do nothing
+				//we don't care if an object collides with itself
+			}
+			else if(m_vSprites.get(i).TestCollision(testSprite))
+			{
+				return MainActivity.SpriteCollision(m_vSprites.get(i), testSprite);
+			}
+			else
+			{
+				//do nothing - we didn't collide
+			}
+		}
+		
+		return false;
 	}
 	
 	// Constructor
@@ -70,7 +88,18 @@ public class GameEngine
 	
 	public Sprite IsPointInSprite(int x, int y)
 	{
-		// TODO: Fill in
+		// Iterate through our sprites vector
+		// If we find a sprite that matches, we return it
+		
+		// Question: Should this be rewritten using iterators?
+		int vectorSize = m_vSprites.size(); //makes code slightly faster
+		for(int i = 0; i < vectorSize; ++i)
+		{
+			if(!m_vSprites.get(i).IsHidden() && 
+					m_vSprites.get(i).IsPointInside(x,y))
+				return m_vSprites.get(i);
+		}
+		
 		return null;
 	}
 	
