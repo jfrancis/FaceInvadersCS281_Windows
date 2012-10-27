@@ -9,6 +9,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Menu;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
+
 import java.util.Random;
 
 import com.cs281.face.invaders.Sprite.BOUNDSACTION;
@@ -16,12 +21,25 @@ import com.cs281.face.invaders.R;
 
 public class MainActivity extends Activity {
 
+	private RenderView mRenderView;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        					 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        mRenderView = new RenderView(this);
+        
         mContext = this.getApplicationContext();
-        setContentView(R.layout.activity_main);
+        
+        setContentView(mRenderView);
+        
+        // Initialize the game
+        GameInitialize();
+        GameStart();        
     }
 
     @Override
@@ -30,6 +48,80 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    @Override
+    protected void onResume()
+    {
+    	super.onResume();
+    	
+    	GameActivate();
+    	mRenderView.resume();
+    }
+    
+    @Override
+    protected void onPause()
+    {
+    	super.onPause();
+    	
+    	GameDeactivate();
+    	mRenderView.pause();
+    }
+    
+    @Override
+    protected void onDestroy()
+    {
+    	GameEnd();
+    }
+    
+    class RenderView extends SurfaceView implements Runnable {
+    	private Thread mRenderThread = null;
+    	private SurfaceHolder mHolder;
+    	private volatile boolean mRunning = false;
+    	
+    	public RenderView(Context context)
+    	{
+    		super(context);
+    		mHolder = getHolder();
+    	}
+    	
+    	public void resume()
+    	{
+    		mRunning = true;
+    		mRenderThread = new Thread(this);
+    		mRenderThread.start();
+    	}
+    	
+    	public void run()
+    	{
+    		while (mRunning)
+    		{
+    			if (!mHolder.getSurface().isValid())
+    			{
+    				continue;
+    			}
+    			
+    			Canvas canvas = mHolder.lockCanvas();
+    			//canvas.drawRGB(0, 255, 0);
+    			GameCycle(canvas);
+    			mHolder.unlockCanvasAndPost(canvas);
+    		}
+    	}
+    	
+    	public void pause()
+    	{
+    		mRunning = false;
+    		while (true)
+    		{
+    			try
+    			{
+    				mRenderThread.join();
+    			}
+    			catch (InterruptedException e)
+    			{
+    				// retry
+    			}
+    		}
+    	}
+    }
     
     // Added to allow loading of Bitmaps. May be a better way
     private static Context mContext;
@@ -85,7 +177,7 @@ public class MainActivity extends Activity {
 	
 	public final static boolean GameInitialize()
 	{
-		gGame = new GameEngine(640, 480); // TODO: Put in appropriate numbers here
+		gGame = new GameEngine(480, 800); // TODO: Put in appropriate numbers here
 		if (gGame == null)
 		{
 			return false;
@@ -106,9 +198,9 @@ public class MainActivity extends Activity {
 		
 		// Load the Bitmaps
 		gSplashBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													 R.drawable.ic_hamm);
+													 R.drawable.ic_launcher);//ic_hamm);
 		gDesertBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									 R.drawable.ic_hamm);
+				 									 R.drawable.ic_launcher);//ic_hamm);
 		gCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 												  R.drawable.ic_hamm);
 		gSmCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
@@ -134,7 +226,7 @@ public class MainActivity extends Activity {
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									   R.drawable.ic_hamm);
 		
-		gBackground = new StarryBackground(600, 450, 100, 50);
+		gBackground = new StarryBackground(440, 770, 100, 50);
 		
 		// Start the game for demo mode
 		gDemo = true;
@@ -295,7 +387,7 @@ public class MainActivity extends Activity {
 			// Move the car based upon left/right key presses
 			Point ptVelocity = new Point(gCarSprite.GetVelocity());
 			
-			if ((++gMovementDelay > 2) && LEFTKEYPRESSED /*TODO: Replace*/)
+			if ((++gMovementDelay > 2) && /*LEFTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move left
 				if (ptVelocity.x > 0)
@@ -310,7 +402,7 @@ public class MainActivity extends Activity {
 				gCarSprite.SetVelocity(ptVelocity);
 				gMovementDelay = 0;
 			}
-			else if ((++gMovementDelay > 2) && RIGHTKEYPRESSED /*TODO: Replace*/)
+			else if ((++gMovementDelay > 2) && /*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move right
 				if (ptVelocity.x < 0)
@@ -327,7 +419,7 @@ public class MainActivity extends Activity {
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 6) && SPACEPRESSED /*TODO: Replace*/)
+			if ((++gFireInputDelay > 6) && /*SPACEPRESSED*/false /*TODO: Replace*/)
 			{
 				if (gSpreadShot)
 				{
@@ -413,7 +505,7 @@ public class MainActivity extends Activity {
 		}
 		
 		// Start a new game based upon an Enter (Return) key press
-		if(ENTERPRESSED /*TODO: Replace code*/)
+		if(/*ENTERPRESSED*/false /*TODO: Replace code*/)
 		{
 			if (gDemo)
 			{

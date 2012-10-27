@@ -27,6 +27,7 @@ public class StarryBackground extends Background
 		
 		for (int i = 0; i < mNumStars; i++)
 		{
+			mPtStars[i] = new Point();
 			mPtStars[i].x = rand.nextInt(mWidth);
 			mPtStars[i].y = rand.nextInt(mHeight);
 			mStarColors[i] = Color.rgb(128, 128, 128);

@@ -103,22 +103,22 @@ GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass,
   LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth, int iHeight)
 {
   // Set the member variables for the game engine
-  m_pGameEngine = this;
-  m_hInstance = hInstance;
-  m_hWindow = NULL;
-  if (lstrlen(szWindowClass) > 0)
-    lstrcpy(m_szWindowClass, szWindowClass);
-  if (lstrlen(szTitle) > 0)
-    lstrcpy(m_szTitle, szTitle);
-  m_wIcon = wIcon;
-  m_wSmallIcon = wSmallIcon;
-  m_iWidth = iWidth;
-  m_iHeight = iHeight;
-  m_iFrameDelay = 50;   // 20 FPS default
-  m_bSleep = TRUE;
-  m_uiJoystickID = 0;
-  m_vSprites.reserve(50);
-  m_uiMIDIPlayerID = 0;
+m_pGameEngine = this;
+m_hInstance = hInstance;
+m_hWindow = NULL;
+if (lstrlen(szWindowClass) > 0)
+lstrcpy(m_szWindowClass, szWindowClass);
+if (lstrlen(szTitle) > 0)
+lstrcpy(m_szTitle, szTitle);
+m_wIcon = wIcon;
+m_wSmallIcon = wSmallIcon;
+m_iWidth = iWidth;
+m_iHeight = iHeight;
+m_iFrameDelay = 50;   // 20 FPS default
+m_bSleep = TRUE;
+m_uiJoystickID = 0;
+m_vSprites.reserve(50);
+m_uiMIDIPlayerID = 0;
 }
 
 GameEngine::~GameEngine()
