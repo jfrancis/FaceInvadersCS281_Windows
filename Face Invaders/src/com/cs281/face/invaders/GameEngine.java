@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.graphics.*;
+
+import java.util.Iterator;
 import java.util.Vector;
 
 //-----------------------------------------------------------------
@@ -52,23 +54,45 @@ public class GameEngine
 	// Constructor
 	public GameEngine(int iWidth, int iHeight)
 	{
-		// TODO: Fill in
+		m_iWidth = iWidth;
+		m_iHeight = iHeight;
+		m_iFrameDelay = 50;   // 20 FPS default
+		m_bSleep = true;
 	}
 	
 	// General Methods
-	public boolean Initialize()
-	{
-		return false; //TODO: fill in
-	}
-	
 	public void ErrorQuit(String errorMsg)
 	{
 		// TODO: Fill in
 	}
 	
 	public void AddSprite(Sprite sprite)
-	{
-		// TODO: Fill in
+	{	
+		// Add a sprite to the sprite vector
+		if (sprite != null)
+		{
+			// See if there are sprites already in the sprite vector
+			if (m_vSprites.size() > 0)
+			{
+				// Find a spot in the sprite vector to insert the sprite by 
+				// its z-order
+				int len = m_vSprites.size();
+				for (int i = 0; i < len; i++)
+				{
+					Sprite current = m_vSprites.get(i);
+					if (sprite.GetZOrder() < current.GetZOrder())
+					{
+						// Insert the sprite into the sprite vector
+						m_vSprites.insertElementAt(sprite, i);
+						return;
+					}
+				}
+			}
+			
+			// The sprite's z-order is highest, so add it to the end of 
+			// the vector
+			m_vSprites.add(sprite);
+		}
 	}
 	
 	public void DrawSprites(Canvas canvas)
@@ -78,7 +102,47 @@ public class GameEngine
 	
 	public void UpdateSprites()
 	{
-		// TODO: Fill in
+		// Update the sprites in the sprite vector
+		Rect rcOldSpritePos;
+		short saSpriteAction;
+
+		int len = m_vSprites.size();
+		for (int i = 0; i < len; i++)
+		{
+			Sprite current = m_vSprites.get(i);
+			
+			// Save the old sprite position in case we need to restore it
+			rcOldSpritePos = current.GetPosition();
+	
+			// Update the sprite
+			saSpriteAction = current.Update();
+	
+			// Handle the SA_ADDSPRITE sprite action
+			if ((saSpriteAction & Sprite.SA_ADDSPRITE) > 0)
+			    // Allow the sprite to add its sprite
+			    AddSprite(current.AddSprite());
+	
+			// Handle the SA_KILL sprite action
+			if ((saSpriteAction & Sprite.SA_KILL) > 0)
+			{
+			    // Notify the game that the sprite is dying
+			    MainActivity.SpriteDying(current);
+	
+			    // Kill the sprite
+			    m_vSprites.remove(i);
+			    len--;
+			    i--; // TODO: is this necessary?
+			    
+			    continue;
+			}
+	
+			// See if the sprite collided with any others
+			if (CheckSpriteCollision(current))
+			{
+			    // Restore the old sprite position
+			    current.SetPosition(rcOldSpritePos);
+			}
+		}
 	}
 	
 	public void CleanupSprites()
