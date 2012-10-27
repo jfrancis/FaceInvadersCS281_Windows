@@ -43,8 +43,8 @@ public class GameEngine
 //private static GameEngine*  m_pGameEngine;
 //private HINSTANCE           m_hInstance;
 //private HWND                m_hWindow;
-private TCHAR               m_szWindowClass[32];
-private TCHAR               m_szTitle[32];
+//private TCHAR               m_szWindowClass[32];
+//private TCHAR               m_szTitle[32];
 //private WORD                m_wIcon, m_wSmallIcon;
 private int                 m_iWidth, m_iHeight;
 private int                 m_iFrameDelay;
@@ -52,7 +52,7 @@ private boolean                m_bSleep;
 //private unsigned int                m_uiJoystickID;
 //private RECT                m_rcJoystickTrip;
 //private vector<Sprite*>     m_vSprites;
-private unsigned int                m_uiMIDIPlayerID;
+private int                m_uiMIDIPlayerID;
 
 // Helper Methods
 boolean               CheckSpriteCollision(Sprite* pTestSprite);
@@ -66,23 +66,24 @@ public:
 
 // General Methods
 //static GameEngine*  GetEngine() { return m_pGameEngine; }; - note: Singleton pattern?
-boolean                Initialize(int iCmdShow);
-LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam,
-                     LPARAM lParam);
-void                ErrorQuit(LPTSTR szErrorMsg);
-BOOL                InitJoystick();
-void                CaptureJoystick();
-void                ReleaseJoystick();
-void                CheckJoystick();
-void                AddSprite(Sprite* pSprite);
-void                DrawSprites(HDC hDC);
-void                UpdateSprites();
-void                CleanupSprites();
-Sprite*             IsPointInSprite(int x, int y);
-void                PlayMIDISong(LPTSTR szMIDIFileName = TEXT(""),
+public boolean                Initialize(int iCmdShow);
+//LRESULT is a messagehandler - not sure how we'll use it
+//LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam,
+//                     LPARAM lParam);
+public void                ErrorQuit(LPTSTR szErrorMsg);
+public boolean                InitJoystick();
+public void                CaptureJoystick();
+public void                ReleaseJoystick();
+public void                CheckJoystick();
+public void                AddSprite(Sprite* pSprite);
+public void                DrawSprites(HDC hDC);
+public void                UpdateSprites();
+public void                CleanupSprites();
+public Sprite*             IsPointInSprite(int x, int y);
+public void                PlayMIDISong(LPTSTR szMIDIFileName = TEXT(""),
                      BOOL bRestart = TRUE);
-void                PauseMIDISong();
-void                CloseMIDIPlayer();
+public void                PauseMIDISong();
+public void                CloseMIDIPlayer();
 
 // Accessor Methods
 HINSTANCE GetInstance() { return m_hInstance; };
