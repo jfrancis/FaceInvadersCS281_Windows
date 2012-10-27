@@ -1,8 +1,8 @@
 //Kevin Zeillmann
-//Last changed: 10/17/12
+//John Francis
+//Amber Shindhelm
+//Last changed: 10/27/12
 
-
-//TODO: Fill out class
 
 package com.cs281.face.invaders;
 
@@ -156,6 +156,7 @@ public class GameEngine
 		// If we find a sprite that matches, we return it
 		
 		// Question: Should this be rewritten using iterators?
+		// Notworthit.jpg
 		int vectorSize = m_vSprites.size(); //makes code slightly faster
 		for(int i = 0; i < vectorSize; ++i)
 		{
