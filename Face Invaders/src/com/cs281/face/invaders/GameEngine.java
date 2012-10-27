@@ -45,12 +45,12 @@ public class GameEngine
 //private HWND                m_hWindow;
 private TCHAR               m_szWindowClass[32];
 private TCHAR               m_szTitle[32];
-private WORD                m_wIcon, m_wSmallIcon;
+//private WORD                m_wIcon, m_wSmallIcon;
 private int                 m_iWidth, m_iHeight;
 private int                 m_iFrameDelay;
 private boolean                m_bSleep;
-private unsigned int                m_uiJoystickID;
-private RECT                m_rcJoystickTrip;
+//private unsigned int                m_uiJoystickID;
+//private RECT                m_rcJoystickTrip;
 //private vector<Sprite*>     m_vSprites;
 private unsigned int                m_uiMIDIPlayerID;
 
@@ -61,11 +61,12 @@ public:
 // Constructor(s)/Destructor
        GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle,
          WORD wIcon, WORD wSmallIcon, int iWidth = 640, int iHeight = 480);
-virtual ~GameEngine();
+
+//virtual ~GameEngine(); - We don't need destructors since Java is garbage-collected
 
 // General Methods
-static GameEngine*  GetEngine() { return m_pGameEngine; };
-BOOL                Initialize(int iCmdShow);
+//static GameEngine*  GetEngine() { return m_pGameEngine; }; - note: Singleton pattern?
+boolean                Initialize(int iCmdShow);
 LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam,
                      LPARAM lParam);
 void                ErrorQuit(LPTSTR szErrorMsg);
@@ -88,13 +89,13 @@ HINSTANCE GetInstance() { return m_hInstance; };
 HWND      GetWindow() { return m_hWindow; };
 void      SetWindow(HWND hWindow) { m_hWindow = hWindow; };
 LPTSTR    GetTitle() { return m_szTitle; };
-WORD      GetIcon() { return m_wIcon; };
-WORD      GetSmallIcon() { return m_wSmallIcon; };
+//WORD      GetIcon() { return m_wIcon; };
+//WORD      GetSmallIcon() { return m_wSmallIcon; };
 int       GetWidth() { return m_iWidth; };
 int       GetHeight() { return m_iHeight; };
 int       GetFrameDelay() { return m_iFrameDelay; };
 void      SetFrameRate(int iFrameRate) { m_iFrameDelay = 1000 /
            iFrameRate; };
-BOOL      GetSleep() { return m_bSleep; };
-void      SetSleep(BOOL bSleep) { m_bSleep = bSleep; };
+boolean      GetSleep() { return m_bSleep; };
+void      SetSleep(boolean bSleep) { m_bSleep = bSleep; };
 };
