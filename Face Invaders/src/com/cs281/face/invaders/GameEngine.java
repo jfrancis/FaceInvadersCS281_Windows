@@ -97,7 +97,12 @@ public class GameEngine
 	
 	public void DrawSprites(Canvas canvas)
 	{
-		// TODO: Fill in
+		  // Draw the sprites in the sprite vector
+		int vectorSize = m_vSprites.size();
+		for(int i = 0; i < vectorSize; ++i)
+		{
+			m_vSprites.get(i).Draw(canvas);
+		}
 	}
 	
 	public void UpdateSprites()
@@ -145,9 +150,10 @@ public class GameEngine
 		}
 	}
 	
+	// Called in NewGame() and GameEnd() in MainActivity.java
 	public void CleanupSprites()
 	{
-		// TODO: Do we need this?
+		m_vSprites = new Vector<Sprite>();
 	}
 	
 	public Sprite IsPointInSprite(int x, int y)

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.graphics.*;
 import android.graphics.Paint.Align;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.Menu;
 import java.util.Random;
 
@@ -149,6 +151,23 @@ public class MainActivity extends Activity {
 		
 		// Save the hi scores
 		WriteHiScores();
+	}
+	
+	public void ErrorQuit(String errorMsg)
+	{
+		// Displays the error message in a message box
+		AlertDialog dispError = new AlertDialog.Builder(this).create();  
+		dispError.setTitle("Error");
+		// Use below if necessary
+		//dispError.setCancelable(false); // This blocks the 'BACK' button  
+		dispError.setMessage(errorMsg);  
+		dispError.setButton("OK", new DialogInterface.OnClickListener() {  
+		    
+		    public void onClick(DialogInterface dialog, int which) {  
+		        dialog.dismiss();                      
+		    }  
+		});  
+		dispError.show();
 	}
 	
 	// TODO: Is this method necessary on the Android platform?
