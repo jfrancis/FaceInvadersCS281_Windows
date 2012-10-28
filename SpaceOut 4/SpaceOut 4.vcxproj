@@ -107,8 +107,30 @@
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Blobbo.bmp" />
+    <None Include="BMissile.bmp" />
+    <None Include="BMissile.wav" />
+    <None Include="Car.bmp" />
+    <None Include="Desert.bmp" />
+    <None Include="GameOver.bmp" />
+    <None Include="GameOver.wav" />
+    <None Include="Jelly.bmp" />
+    <None Include="JMissile.bmp" />
+    <None Include="JMissile.wav" />
+    <None Include="LgExplode.wav" />
+    <None Include="LgExplosion.bmp" />
+    <None Include="Missile.bmp" />
+    <None Include="Missile.wav" />
+    <None Include="powerup1.bmp" />
+    <None Include="SmCar.bmp" />
+    <None Include="SmExplode.wav" />
+    <None Include="SmExplosion.bmp" />
     <None Include="SpaceOut.ico" />
     <None Include="SpaceOut_sm.ico" />
+    <None Include="Splash.bmp" />
+    <None Include="Timmy.bmp" />
+    <None Include="TMissile.bmp" />
+    <None Include="TMissile.wav" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SpaceOut.rc" />

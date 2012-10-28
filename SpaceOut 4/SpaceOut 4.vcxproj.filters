@@ -64,6 +64,58 @@
     <None Include="SpaceOut_sm.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="powerup1.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Splash.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Desert.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Car.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="SmCar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Missile.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Blobbo.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="BMissile.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Jelly.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="JMissile.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Timmy.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="TMissile.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="SmExplosion.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="LgExplosion.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="GameOver.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Missile.wav" />
+    <None Include="BMissile.wav" />
+    <None Include="JMissile.wav" />
+    <None Include="TMissile.wav" />
+    <None Include="SmExplode.wav" />
+    <None Include="LgExplode.wav" />
+    <None Include="GameOver.wav" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SpaceOut.rc">

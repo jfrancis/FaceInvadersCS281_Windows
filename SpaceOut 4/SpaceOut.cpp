@@ -61,6 +61,7 @@ void GameStart(HWND hWindow)
   SelectObject(_hOffscreenDC, _hOffscreenBitmap);
 
   // Create and load the bitmaps
+  LPTSTR powerup1 = "powerup1.bmp";
   HDC hDC = GetDC(hWindow);
   _pSplashBitmap = new Bitmap(hDC, IDB_SPLASH, _hInstance);
   _pDesertBitmap = new Bitmap(hDC, IDB_DESERT, _hInstance);
@@ -76,6 +77,7 @@ void GameStart(HWND hWindow)
   _pSmExplosionBitmap = new Bitmap(hDC, IDB_SMEXPLOSION, _hInstance);
   _pLgExplosionBitmap = new Bitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new Bitmap(hDC, IDB_GAMEOVER, _hInstance);
+  _pPowerUpBitmap = new Bitmap(hDC, powerup1);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -109,6 +111,7 @@ void GameEnd()
   delete _pSmExplosionBitmap;
   delete _pLgExplosionBitmap;
   delete _pGameOverBitmap;
+  delete _pPowerUpBitmap;
 
   // Cleanup the background
   delete _pBackground;
@@ -421,11 +424,56 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     pSprite->SetPosition(rcPos.left, rcPos.top);
     _pGame->AddSprite(pSprite);
 
+	if /*((rand() % 6) == 4)*/ (1)//random powerup addition code
+	{
+	  RECT  rcBounds = { 0, 0, 450, 450 };
+      RECT  rcPos = pSpriteHitter->GetPosition();
+      Sprite* pSprite = new Sprite(_pPowerUpBitmap, rcBounds, BA_DIE);
+      pSprite->SetPosition(rcPos.left, rcPos.top);
+      pSprite->SetVelocity(0, 4);
+      _pGame->AddSprite(pSprite);
+	}
+
     // Update the score
     _iScore += 25;
     _iDifficulty = max(80 - (_iScore / 20), 20);
   }
-
+//powerup hitting car code
+  if ((pHitter == _pCarBitmap && pHittee == _pPowerUpBitmap) || (pHitter == _pPowerUpBitmap && pHittee == _pCarBitmap)) 
+  {
+	  spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
+	  int powerupNumber = rand() % 6;
+	  if (powerupNumber  == 0)
+	  {
+		  ++_iNumLives;
+	  }else if (powerupNumber == 1)
+	  {
+		  spreadShot = 1;
+	  }else if (powerupNumber == 2)
+	  {
+		  bouncingBullet = 1;
+	  }else if (powerupNumber == 3)
+	  {
+		  warpingBullet = 1;
+	  }else if (powerupNumber == 4)
+	  {
+		  piercingBullet = 1;
+	  }else if (powerupNumber == 5)
+	  {
+		  explosiveBullet = 1;
+	  }
+	  if (pHitter == _pPowerUpBitmap)
+	  {
+		  pSpriteHitter->Kill();
+	  }else
+	  {
+		  pSpriteHittee->Kill();
+	  }
+  }
   // See if an alien missile has collided with the car
   if ((pHitter == _pCarBitmap && (pHittee == _pBMissileBitmap ||
     pHittee == _pJMissileBitmap || pHittee == _pTMissileBitmap)) ||
