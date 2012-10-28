@@ -1,6 +1,8 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
+import android.util.Log;
+
 import java.util.Random;
 
 public class Sprite {
@@ -76,6 +78,7 @@ public class Sprite {
 	// Constructors
 	public Sprite(Bitmap bmp)
 	{
+		Log.v("FaceInvaders", "SpriteCreated");
 		// Initialize the member variables
 		mBitmap = bmp;
 		mNumFrames = 1;
@@ -84,7 +87,7 @@ public class Sprite {
 		CalcCollisionRect();
 		mPtVelocity.set(0, 0);
 		mZOrder = 0;
-		mRcBounds.set(0, 0, 640, 480); // TODO: These numbers will change 
+		mRcBounds.set(0, 0, 480, 800); // TODO: These numbers will change 
 									   // depending on screen resolution
 		mBoundsAction = BOUNDSACTION.BA_STOP;
 		mHidden = false;
@@ -94,6 +97,7 @@ public class Sprite {
 	
 	public Sprite(Bitmap bmp, Rect rcBounds, BOUNDSACTION boundsAction)
 	{
+		Log.v("FaceInvaders", "SpriteCreated");
 		// Calculate a random position
 		Random rand = new Random();
 		int iXPos = rand.nextInt(rcBounds.right - rcBounds.left);
@@ -122,6 +126,7 @@ public class Sprite {
 	public Sprite(Bitmap bmp, Point ptPosition, Point ptVelocity, int zOrder,
 				  Rect rcBounds, BOUNDSACTION boundsAction)
 	{
+		Log.v("FaceInvaders", "SpriteCreated");
 		// Initialize the member variables
 		mBitmap = bmp;
 		mNumFrames = 1;
@@ -132,7 +137,7 @@ public class Sprite {
 					    // as it does in the previous constructor? May be a typo in the original
 						// code
 		CalcCollisionRect();
-		mPtVelocity.set(ptPosition.x, ptPosition.y); 
+		mPtVelocity.set(ptVelocity.x, ptVelocity.y); 
 				     // TODO: Doesn't make any sense right now why original
 					 // code assigns ptPosition to mPtVelocity instead of
 					 // assigning ptVelocity to mPtVelocity. Probably another
@@ -149,6 +154,7 @@ public class Sprite {
 	// General Methods
 	public short Update()
 	{
+		Log.v("FaceInvaders", "SpriteUpdated");
 		if (mDying)
 		{
 			return SA_KILL;
@@ -273,7 +279,7 @@ public class Sprite {
 	
 	public final void Draw(Canvas canvas)
 	{
-		
+		Log.v("FaceInvaders", "Sprite.Draw");
 		if (mBitmap != null && !mHidden)
 		{
 			// Draw the appropriate frame, if necessary

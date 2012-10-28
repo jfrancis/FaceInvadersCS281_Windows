@@ -210,23 +210,23 @@ public class MainActivity extends Activity {
 		gBlobboBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 													 R.drawable.ic_hamm);
 		gBMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									   R.drawable.ic_hamm);
+				 									   R.drawable.ic_launcher);
 		gJellyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									R.drawable.ic_hamm);
 		gJMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													   R.drawable.ic_hamm);
+													   R.drawable.ic_launcher);
 		gTimmyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									R.drawable.ic_hamm);
 		gTMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									   R.drawable.ic_hamm);
+				 									   R.drawable.ic_launcher);
 		gSmExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-														  R.drawable.ic_hamm);
+														  R.drawable.ic_action_search);
 		gLgExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-														  R.drawable.ic_hamm);
+														  R.drawable.ic_action_search);
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									   R.drawable.ic_hamm);
 		
-		gBackground = new StarryBackground(440, 770, 100, 50);
+		gBackground = new StarryBackground(480, 800, 100, 50);
 		
 		// Start the game for demo mode
 		gDemo = true;
@@ -555,7 +555,7 @@ public class MainActivity extends Activity {
 			}
 		
 			// Create a large explosion sprite at the alien's position
-			Rect rcBounds = new Rect(0, 0, 600, 450);
+			Rect rcBounds = new Rect(0, 0, 480, 800);
 			Rect rcPos;
 			
 			if (hitter == gMissileBitmap)
@@ -598,7 +598,7 @@ public class MainActivity extends Activity {
 			}
 			
 			// Create a large explosion sprite at the car's position
-			Rect rcBounds = new Rect(0, 0, 600, 480);
+			Rect rcBounds = new Rect(0, 0, 480, 800);
 			Rect rcPos;
 			
 			if (hitter == gCarBitmap)
@@ -650,7 +650,7 @@ public class MainActivity extends Activity {
 			}
 			
 			// Create a small explosion sprite at the missile's position
-			Rect rcBounds = new Rect(0, 0, 600, 450);
+			Rect rcBounds = new Rect(0, 0, 480, 800);
 			Rect rcPos = sprite.GetPosition();
 			sprite = new Sprite(gSmExplosionBitmap, rcBounds,
 								BOUNDSACTION.BA_STOP);
@@ -683,22 +683,19 @@ public class MainActivity extends Activity {
 		else
 		{
 			// Create the car sprite
-			Rect rcBounds = new Rect(0, 0, 600, 450);
+			Rect rcBounds = new Rect(0, 0, 480, 800);
 			gCarSprite = new Sprite(gCarBitmap, rcBounds, BOUNDSACTION.BA_WRAP);
 			gCarSprite.SetPosition(300, 405);
 			gGame.AddSprite(gCarSprite);
 			
 			// TODO: Play the background music
 		}
-		
-		// Clear the sprites
-		gGame.CleanupSprites();
 	}
 	
 	public final static void AddAlien()
 	{	  
 		// Create a new random alien sprite
-		Rect rcBounds = new Rect(0, 0, 600, 410);
+		Rect rcBounds = new Rect(0, 0, 480, 800);
 		AlienSprite sprite = null;
 		
 		Random rand = new Random();

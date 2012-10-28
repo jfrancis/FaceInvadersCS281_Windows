@@ -8,6 +8,7 @@ package com.cs281.face.invaders;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.graphics.*;
 
@@ -114,6 +115,7 @@ public class GameEngine
 		int len = m_vSprites.size();
 		for (int i = 0; i < len; i++)
 		{
+			Log.v("FaceInvaders", "SpriteCreatedLoop");
 			Sprite current = m_vSprites.get(i);
 			
 			// Save the old sprite position in case we need to restore it

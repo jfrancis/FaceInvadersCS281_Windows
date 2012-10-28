@@ -33,7 +33,7 @@ public class AlienSprite extends Sprite {
 	public Sprite AddSprite()
 	{	
 		// Create a new missile sprite
-		Rect rcBounds = new Rect(0, 0, 640, 410);
+		Rect rcBounds = new Rect(0, 0, 480, 800);
 		Rect rcPos = GetPosition();
 		
 		Sprite sprite = null;

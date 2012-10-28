@@ -60,7 +60,7 @@ public class StarryBackground extends Background
 		// Draw the solid black background
 		Rect rect = new Rect(0, 0, mWidth, mHeight);
 		Paint paint = new Paint();
-		paint.setColor(0);
+		paint.setColor(0xFF000000);
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(rect, paint);
 		
