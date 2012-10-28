@@ -11,9 +11,24 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_action_search=0x7f020000;
-        public static final int ic_hamm=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
+        public static final int blobbo=0x7f020000;
+        public static final int bmissile=0x7f020001;
+        public static final int car=0x7f020002;
+        public static final int desert=0x7f020003;
+        public static final int gameover=0x7f020004;
+        public static final int ic_action_search=0x7f020005;
+        public static final int ic_hamm=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int jelly=0x7f020008;
+        public static final int jmissile=0x7f020009;
+        public static final int lgexplosion=0x7f02000a;
+        public static final int missile=0x7f02000b;
+        public static final int powerup1=0x7f02000c;
+        public static final int smcar=0x7f02000d;
+        public static final int smexplosion=0x7f02000e;
+        public static final int splash=0x7f02000f;
+        public static final int timmy=0x7f020010;
+        public static final int tmissile=0x7f020011;
     }
     public static final class id {
         public static final int imageView1=0x7f070001;

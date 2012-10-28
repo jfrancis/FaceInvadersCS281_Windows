@@ -6,13 +6,7 @@
 
 package com.cs281.face.invaders;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
 import android.graphics.*;
-
-import java.util.Iterator;
 import java.util.Vector;
 
 //-----------------------------------------------------------------
@@ -59,12 +53,6 @@ public class GameEngine
 		m_iHeight = iHeight;
 		m_iFrameDelay = 50;   // 20 FPS default
 		m_bSleep = true;
-	}
-	
-	// General Methods
-	public void ErrorQuit(String errorMsg)
-	{
-		// TODO: Fill in
 	}
 	
 	public void AddSprite(Sprite sprite)
@@ -115,7 +103,6 @@ public class GameEngine
 		int len = m_vSprites.size();
 		for (int i = 0; i < len; i++)
 		{
-			Log.v("FaceInvaders", "SpriteCreatedLoop");
 			Sprite current = m_vSprites.get(i);
 			
 			// Save the old sprite position in case we need to restore it
@@ -126,8 +113,10 @@ public class GameEngine
 	
 			// Handle the SA_ADDSPRITE sprite action
 			if ((saSpriteAction & Sprite.SA_ADDSPRITE) > 0)
+			{
 			    // Allow the sprite to add its sprite
 			    AddSprite(current.AddSprite());
+			}
 	
 			// Handle the SA_KILL sprite action
 			if ((saSpriteAction & Sprite.SA_KILL) > 0)

@@ -1,7 +1,6 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -67,18 +66,17 @@ public class Sprite {
 		int iXShrink = (mRcPosition.left - mRcPosition.right) / 12;
 		int iYShrink = (mRcPosition.top - mRcPosition.bottom) / 12;
 		mRcCollision.set(mRcPosition);
-		mRcCollision.inset(-iXShrink, -iYShrink); // It appears that inset is
-												  // equivalent to InflateRect
-												  // when the parameters are
-												  // negated. Need to 
-												  // double-check this
+		mRcCollision.inset(-iXShrink, -iYShrink); // TODO: It appears that
+												  // inset is equivalent to
+												  // InflateRect when the
+												  // parameters are negated. 
+												  // Need to double-check this.
 	}
 	
 	
 	// Constructors
 	public Sprite(Bitmap bmp)
 	{
-		Log.v("FaceInvaders", "SpriteCreated");
 		// Initialize the member variables
 		mBitmap = bmp;
 		mNumFrames = 1;
@@ -97,7 +95,6 @@ public class Sprite {
 	
 	public Sprite(Bitmap bmp, Rect rcBounds, BOUNDSACTION boundsAction)
 	{
-		Log.v("FaceInvaders", "SpriteCreated");
 		// Calculate a random position
 		Random rand = new Random();
 		int iXPos = rand.nextInt(rcBounds.right - rcBounds.left);
@@ -126,22 +123,25 @@ public class Sprite {
 	public Sprite(Bitmap bmp, Point ptPosition, Point ptVelocity, int zOrder,
 				  Rect rcBounds, BOUNDSACTION boundsAction)
 	{
-		Log.v("FaceInvaders", "SpriteCreated");
 		// Initialize the member variables
 		mBitmap = bmp;
 		mNumFrames = 1;
 		mCurFrame = mFrameDelay = mFrameTrigger = 0;
 		mRcPosition.set(ptPosition.x, ptPosition.y, 
-						mBitmap.getWidth(), mBitmap.getHeight()); // TODO: may be incorrect,
-						// why doesn't original code add the x and y to getWidth and getHeight
-					    // as it does in the previous constructor? May be a typo in the original
-						// code
+						ptPosition.x + mBitmap.getWidth(),
+						ptPosition.y + mBitmap.getHeight()); 
+		// TODO: above may be incorrect,
+		// why doesn't original code add the x and y to getWidth and getHeight
+	    // as it does in the previous constructor? May be a typo in original
+		// code. CHANGED TO MAKE CORRECT
+		
 		CalcCollisionRect();
 		mPtVelocity.set(ptVelocity.x, ptVelocity.y); 
 				     // TODO: Doesn't make any sense right now why original
 					 // code assigns ptPosition to mPtVelocity instead of
 					 // assigning ptVelocity to mPtVelocity. Probably another
-					 // typo
+					 // typo. CHANGED TO MAKE CORRECT
+		
 		mZOrder = zOrder;
 		mRcBounds.set(rcBounds);
 		mBoundsAction = boundsAction;
@@ -154,7 +154,6 @@ public class Sprite {
 	// General Methods
 	public short Update()
 	{
-		Log.v("FaceInvaders", "SpriteUpdated");
 		if (mDying)
 		{
 			return SA_KILL;
@@ -279,14 +278,13 @@ public class Sprite {
 	
 	public final void Draw(Canvas canvas)
 	{
-		Log.v("FaceInvaders", "Sprite.Draw");
 		if (mBitmap != null && !mHidden)
-		{
+		{			
 			// Draw the appropriate frame, if necessary
 			if (mNumFrames == 1)
-			{
+			{	
 				canvas.drawBitmap(mBitmap, mRcPosition.left,
-								  mRcPosition.right, null);
+								  mRcPosition.top, null);
 			}
 			else
 			{
@@ -398,7 +396,7 @@ public class Sprite {
 	
 	public final int GetZOrder() // The C++ code includes a boolean return type,
 						   // even though the z order variable is an int.
-						   // Was this a typo in the C++ code?
+						   // Was this a typo in the C++ code? YES
 	{
 		return mZOrder;
 	}

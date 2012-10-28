@@ -100,7 +100,6 @@ public class MainActivity extends Activity {
     			}
     			
     			Canvas canvas = mHolder.lockCanvas();
-    			//canvas.drawRGB(0, 255, 0);
     			GameCycle(canvas);
     			mHolder.unlockCanvasAndPost(canvas);
     		}
@@ -198,33 +197,33 @@ public class MainActivity extends Activity {
 		
 		// Load the Bitmaps
 		gSplashBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													 R.drawable.ic_launcher);//ic_hamm);
+													 R.drawable.splash);//ic_hamm);
 		gDesertBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									 R.drawable.ic_launcher);//ic_hamm);
+				 									 R.drawable.desert);//ic_hamm);
 		gCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-												  R.drawable.ic_hamm);
+												  R.drawable.car);
 		gSmCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													R.drawable.ic_hamm);
+													R.drawable.smcar);
 		gMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													  R.drawable.ic_hamm);
+													  R.drawable.missile);
 		gBlobboBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													 R.drawable.ic_hamm);
+													 R.drawable.blobbo);
 		gBMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									   R.drawable.ic_launcher);
+				 						  			 R.drawable.bmissile);
 		gJellyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									R.drawable.ic_hamm);
+				 									R.drawable.jelly);
 		gJMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													   R.drawable.ic_launcher);
+									  				   R.drawable.ic_hamm);
 		gTimmyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									R.drawable.ic_hamm);
+				 									R.drawable.timmy);
 		gTMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									   R.drawable.ic_launcher);
+				 									   R.drawable.tmissile);
 		gSmExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-														  R.drawable.ic_action_search);
+														  R.drawable.smexplosion);
 		gLgExplosionBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-														  R.drawable.ic_action_search);
+														  R.drawable.lgexplosion);
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-				 									   R.drawable.ic_hamm);
+				 									   R.drawable.gameover);
 		
 		gBackground = new StarryBackground(480, 800, 100, 50);
 		
@@ -290,8 +289,7 @@ public class MainActivity extends Activity {
 		// Draw the background
 		gBackground.Draw(canvas);
 		
-		// Draw the desert bitmap
-		canvas.drawBitmap(gDesertBitmap, 0, 371, null);
+		canvas.drawBitmap(gDesertBitmap, 0, 720, null);
 		
 		// Draw the sprites
 		gGame.DrawSprites(canvas);
