@@ -9,8 +9,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -19,7 +22,7 @@ import java.util.Random;
 import com.cs281.face.invaders.Sprite.BOUNDSACTION;
 import com.cs281.face.invaders.R;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnTouchListener {
 
 	private RenderView mRenderView;
 	
@@ -34,6 +37,8 @@ public class MainActivity extends Activity {
         mRenderView = new RenderView(this);
         
         mContext = this.getApplicationContext();
+        
+        mRenderView.setOnTouchListener(this);
         
         setContentView(mRenderView);
         
@@ -70,6 +75,17 @@ public class MainActivity extends Activity {
     protected void onDestroy()
     {
     	GameEnd();
+    }
+    
+    @Override
+    public boolean onTouch(View v, MotionEvent event)
+    {
+    	if (event.getAction() == MotionEvent.ACTION_DOWN)
+    	{
+    		HandleKeys(event.getX(), event.getY());
+    	}
+    	
+    	return true;
     }
     
     class RenderView extends SurfaceView implements Runnable {
@@ -323,12 +339,12 @@ public class MainActivity extends Activity {
 			// Draw the score
 			String text = String.format("%d", gScore);
 			textPaint.setTextAlign(Align.RIGHT);
-			canvas.drawText(text, 460, 0, textPaint);
+			canvas.drawText(text, 250, 100, textPaint);
 			
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
 			{
-				canvas.drawBitmap(gSmCarBitmap, 520 + 
+				canvas.drawBitmap(gSmCarBitmap, 100 + 
 								  (gSmCarBitmap.getWidth() * i),
 								  10, null);
 			}
@@ -378,14 +394,14 @@ public class MainActivity extends Activity {
 	
 	// TODO: This method is probably going to need a major Android overhaul
 	//		 to properly handle touch screen input
-	public final static void HandleKeys()
+	public final static void HandleKeys(float x, float y)
 	{
 		if (!gGameOver && !gDemo)
 		{
 			// Move the car based upon left/right key presses
 			Point ptVelocity = new Point(gCarSprite.GetVelocity());
 			
-			if ((++gMovementDelay > 2) && /*LEFTKEYPRESSED*/false /*TODO: Replace*/)
+			if ((++gMovementDelay > 2) && x < gCarSprite.mRcPosition.left && y > 400)///*LEFTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move left
 				if (ptVelocity.x > 0)
@@ -400,7 +416,7 @@ public class MainActivity extends Activity {
 				gCarSprite.SetVelocity(ptVelocity);
 				gMovementDelay = 0;
 			}
-			else if ((++gMovementDelay > 2) && /*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
+			else if ((++gMovementDelay > 2) && x > gCarSprite.mRcPosition.left && y > 400)///*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move right
 				if (ptVelocity.x < 0)
@@ -417,28 +433,28 @@ public class MainActivity extends Activity {
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 6) && /*SPACEPRESSED*/false /*TODO: Replace*/)
+			if ((++gFireInputDelay > 2)) //&& /*SPACEPRESSED*/false /*TODO: Replace*/)
 			{
 				if (gSpreadShot)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 600, 450);
+					Rect rcBounds = new Rect(0, 0, 480, 800);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds, 
 											   BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(0, -7);
 					gGame.AddSprite(sprite);
 					
 					sprite = new Sprite(gMissileBitmap, rcBounds,
 										BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(-3, -4);
 					gGame.AddSprite(sprite);
 					
 					sprite = new Sprite(gMissileBitmap, rcBounds,
 										BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(3, -4);
 					gGame.AddSprite(sprite);
 					
@@ -451,11 +467,11 @@ public class MainActivity extends Activity {
 				else if (gBouncingBullet)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 600, 450);
+					Rect rcBounds = new Rect(0, 0, 480, 800);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_BOUNCE);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(0, -7);
 					gGame.AddSprite(sprite);
 					
@@ -468,11 +484,11 @@ public class MainActivity extends Activity {
 				else if (gWarpingBullet)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 600, 450);
+					Rect rcBounds = new Rect(0, 0, 480, 800);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_WRAP);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(0, -7);
 					gGame.AddSprite(sprite);
 					
@@ -485,11 +501,11 @@ public class MainActivity extends Activity {
 				else
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 600, 450);
+					Rect rcBounds = new Rect(0, 0, 480, 800);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 400);
+					sprite.SetPosition(rcPos.left + 15, 725);
 					sprite.SetVelocity(0, -7);
 					gGame.AddSprite(sprite);
 					
@@ -503,7 +519,7 @@ public class MainActivity extends Activity {
 		}
 		
 		// Start a new game based upon an Enter (Return) key press
-		if(/*ENTERPRESSED*/false /*TODO: Replace code*/)
+		if(true)///*ENTERPRESSED*/false /*TODO: Replace code*/)
 		{
 			if (gDemo)
 			{
@@ -615,7 +631,7 @@ public class MainActivity extends Activity {
 			gGame.AddSprite(sprite);
 			
 			// Move the car back to the start
-			gCarSprite.SetPosition(300, 405);
+			gCarSprite.SetPosition(300, 730);
 			
 			// See if the game is over
 			if (--gNumLives == 0)
@@ -683,7 +699,7 @@ public class MainActivity extends Activity {
 			// Create the car sprite
 			Rect rcBounds = new Rect(0, 0, 480, 800);
 			gCarSprite = new Sprite(gCarBitmap, rcBounds, BOUNDSACTION.BA_WRAP);
-			gCarSprite.SetPosition(300, 405);
+			gCarSprite.SetPosition(300, 730);
 			gGame.AddSprite(gCarSprite);
 			
 			// TODO: Play the background music
