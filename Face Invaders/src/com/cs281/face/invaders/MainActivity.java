@@ -258,7 +258,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		mGroundLevel = mGameHeight - gDesertBitmap.getHeight() / 2;
 		
 		// Start the game for demo mode
-		gDemo = false;
+		gDemo = true;
 		NewGame();
 	}
 	
@@ -744,7 +744,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			gCarSprite.SetPosition(mScreenWidth / 2, mGroundLevel);
 			gGame.AddSprite(gCarSprite);
 			
-			// TODO: Play the background music
+			gGame.PlayMIDISong();
 		}
 	}
 	
