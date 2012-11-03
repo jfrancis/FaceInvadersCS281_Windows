@@ -31,9 +31,10 @@ public class AlienSprite extends Sprite {
 	}
 	
 	public Sprite AddSprite()
-	{	
+	{
 		// Create a new missile sprite
-		Rect rcBounds = new Rect(0, 0, 480, 800);
+		Rect rcBounds = new Rect(0, 0, MainActivity.mScreenWidth,
+								 MainActivity.mGroundLevel - 5);
 		Rect rcPos = GetPosition();
 		
 		Sprite sprite = null;

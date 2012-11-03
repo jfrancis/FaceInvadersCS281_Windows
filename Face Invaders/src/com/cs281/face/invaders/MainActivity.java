@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -26,6 +27,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	private RenderView mRenderView;
 	
+	static public int mScreenWidth;
+	static public int mScreenHeight;
+	static public int mGameHeight;
+	static public int mGroundLevel;
+	static public int mButtonAreaHeight = 100;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,11 @@ public class MainActivity extends Activity implements OnTouchListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         					 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        Display display = getWindowManager().getDefaultDisplay();
+        mScreenWidth = display.getWidth();
+        mScreenHeight = display.getHeight();
+        mGameHeight = mScreenHeight - mButtonAreaHeight;
         
         mRenderView = new RenderView(this);
         
@@ -192,7 +204,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	
 	public final static boolean GameInitialize()
 	{
-		gGame = new GameEngine(480, 800); // TODO: Put in appropriate numbers here
+		gGame = new GameEngine(); // TODO: Put in appropriate numbers here
 		if (gGame == null)
 		{
 			return false;
@@ -219,7 +231,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 												  R.drawable.car);
 		gSmCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													R.drawable.smcar);
+													R.drawable.ic_hamm);
 		gMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 													  R.drawable.missile);
 		gBlobboBitmap = BitmapFactory.decodeResource(mContext.getResources(),
@@ -229,7 +241,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gJellyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									R.drawable.jelly);
 		gJMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-									  				   R.drawable.ic_hamm);
+									  				   R.drawable.jmissile);
 		gTimmyBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									R.drawable.timmy);
 		gTMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
@@ -241,7 +253,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									   R.drawable.gameover);
 		
-		gBackground = new StarryBackground(480, 800, 100, 50);
+		gBackground = new StarryBackground(mScreenWidth, mGameHeight, 100, 50);
+		
+		mGroundLevel = mGameHeight - gDesertBitmap.getHeight() / 2;
 		
 		// Start the game for demo mode
 		gDemo = false;
@@ -305,11 +319,19 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// Draw the background
 		gBackground.Draw(canvas);
 		
-		canvas.drawBitmap(gDesertBitmap, 0, 720, null);
+		// Clear the button area
+		Paint buttonAreaPaint = new Paint();
+		buttonAreaPaint.setColor(Color.BLACK);
+		canvas.drawRect(new Rect(0, mGameHeight, 
+								 mScreenWidth, 
+								 mGameHeight + mButtonAreaHeight),
+								 buttonAreaPaint);	
+		
+		canvas.drawBitmap(gDesertBitmap, 0, 
+						  mGameHeight - gDesertBitmap.getHeight(), null);
 		
 		// Draw the sprites
 		gGame.DrawSprites(canvas);
-		
 		
 		Paint textPaint = new Paint();
 		textPaint.setTypeface(Typeface.DEFAULT);
@@ -318,20 +340,25 @@ public class MainActivity extends Activity implements OnTouchListener {
 		if (gDemo)
 		{
 			// Draw the splash screen image
-			canvas.drawBitmap(gSplashBitmap, 142, 20, null);
+			canvas.drawBitmap(gSplashBitmap, 
+						      mScreenWidth / 2 - gSplashBitmap.getWidth() / 2,
+						      mGameHeight / 2 - gSplashBitmap.getHeight() / 2,
+						      null);
 			
 			// Draw the hi scores
-			int x = 275;
-			int y = 230;
+			int x = mScreenWidth - 25;
+			int y = 20;
 			
 			textPaint.setTextAlign(Align.CENTER);
+			
+			final int hiScoreSpacing = 20; 
 			
 			for (int i = 0; i < 5; i++)
 			{
 				String text = String.format("%d", gHiScores[i]);
 				canvas.drawText(text, x, y, textPaint);
 				
-				y += 20;
+				y += hiScoreSpacing;
 			}
 		}
 		else
@@ -339,21 +366,26 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Draw the score
 			String text = String.format("%d", gScore);
 			textPaint.setTextAlign(Align.RIGHT);
-			canvas.drawText(text, 250, 100, textPaint);
+			canvas.drawText(text, 25, 10, 
+					        textPaint);
 			
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
 			{
-				canvas.drawBitmap(gSmCarBitmap, 100 + 
+				canvas.drawBitmap(gSmCarBitmap, 25 + 
 								  (gSmCarBitmap.getWidth() * i),
-								  10, null);
+								  5, null);
 			}
 			
 			// Draw the game over message if necessary
 			if (gGameOver)
 			{
-				canvas.drawBitmap(gGameOverBitmap, 170, 100, null);
+				canvas.drawBitmap(gGameOverBitmap, 
+						mScreenWidth / 2 - gGameOverBitmap.getWidth() / 2,
+					    mGameHeight / 2 - gGameOverBitmap.getHeight() / 2,
+					    null);
 			}
+			
 		}
 	}
 	
@@ -381,6 +413,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		else
 		{
+			GamePaint(canvas);
+			
 			if (--gGameOverDelay == 0)
 			{
 				// Stop the music and switch to demo mode
@@ -396,6 +430,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	//		 to properly handle touch screen input
 	public final static void HandleKeys(float x, float y)
 	{
+		final int missileVelocity = -13;
+		
 		if (!gGameOver && !gDemo)
 		{
 			// Move the car based upon left/right key presses
@@ -438,23 +474,26 @@ public class MainActivity extends Activity implements OnTouchListener {
 				if (gSpreadShot)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 480, 800);
+					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds, 
 											   BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 725);
-					sprite.SetVelocity(0, -7);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
+					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
 					sprite = new Sprite(gMissileBitmap, rcBounds,
 										BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 725);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
 					sprite.SetVelocity(-3, -4);
 					gGame.AddSprite(sprite);
 					
 					sprite = new Sprite(gMissileBitmap, rcBounds,
 										BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 725);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
 					sprite.SetVelocity(3, -4);
 					gGame.AddSprite(sprite);
 					
@@ -467,12 +506,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 				else if (gBouncingBullet)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 480, 800);
+					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_BOUNCE);
-					sprite.SetPosition(rcPos.left + 15, 725);
-					sprite.SetVelocity(0, -7);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
+					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
 					// Play the missile (fire) sound
@@ -484,12 +524,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 				else if (gWarpingBullet)
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 480, 800);
+					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_WRAP);
-					sprite.SetPosition(rcPos.left + 15, 725);
-					sprite.SetVelocity(0, -7);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
+					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
 					// Play the missile (fire) sound
@@ -501,12 +542,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 				else
 				{
 					// Create a new missile sprite
-					Rect rcBounds = new Rect(0, 0, 480, 800);
+					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
 											   BOUNDSACTION.BA_DIE);
-					sprite.SetPosition(rcPos.left + 15, 725);
-					sprite.SetVelocity(0, -7);
+					sprite.SetPosition(rcPos.left + 15,
+									   gCarSprite.mRcPosition.top - 5);
+					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
 					// Play the missile (fire) sound
@@ -519,7 +561,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		
 		// Start a new game based upon an Enter (Return) key press
-		if(true)///*ENTERPRESSED*/false /*TODO: Replace code*/)
+		//if (true)///*ENTERPRESSED*/false /*TODO: Replace code*/)
 		{
 			if (gDemo)
 			{
@@ -569,7 +611,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 		
 			// Create a large explosion sprite at the alien's position
-			Rect rcBounds = new Rect(0, 0, 480, 800);
+			Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 			Rect rcPos;
 			
 			if (hitter == gMissileBitmap)
@@ -612,7 +654,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			
 			// Create a large explosion sprite at the car's position
-			Rect rcBounds = new Rect(0, 0, 480, 800);
+			Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 			Rect rcPos;
 			
 			if (hitter == gCarBitmap)
@@ -631,7 +673,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			gGame.AddSprite(sprite);
 			
 			// Move the car back to the start
-			gCarSprite.SetPosition(300, 730);
+			gCarSprite.SetPosition(mScreenWidth / 2, mGroundLevel);
 			
 			// See if the game is over
 			if (--gNumLives == 0)
@@ -664,7 +706,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			
 			// Create a small explosion sprite at the missile's position
-			Rect rcBounds = new Rect(0, 0, 480, 800);
+			Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 			Rect rcPos = sprite.GetPosition();
 			sprite = new Sprite(gSmExplosionBitmap, rcBounds,
 								BOUNDSACTION.BA_STOP);
@@ -697,9 +739,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		else
 		{
 			// Create the car sprite
-			Rect rcBounds = new Rect(0, 0, 480, 800);
+			Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 			gCarSprite = new Sprite(gCarBitmap, rcBounds, BOUNDSACTION.BA_WRAP);
-			gCarSprite.SetPosition(300, 730);
+			gCarSprite.SetPosition(mScreenWidth / 2, mGroundLevel);
 			gGame.AddSprite(gCarSprite);
 			
 			// TODO: Play the background music
@@ -709,8 +751,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public final static void AddAlien()
 	{	  
 		// Create a new random alien sprite
-		Rect rcBounds = new Rect(0, 0, 480, 800);
+		Rect rcBounds = new Rect(0, 0, mScreenWidth, mGroundLevel - 5);
 		AlienSprite sprite = null;
+		
+		final int spawnHeightBound = 
+				(mGameHeight - gDesertBitmap.getHeight()) / 4 * 3;
 		
 		Random rand = new Random();
 		switch(rand.nextInt(3))
@@ -720,7 +765,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			sprite = new AlienSprite(gBlobboBitmap, rcBounds,
 									 BOUNDSACTION.BA_BOUNCE);
 			sprite.SetNumFrames(8, false);
-			sprite.SetPosition(rand.nextInt(2) == 0 ? 0 : 600, rand.nextInt(370));
+			sprite.SetPosition(rand.nextInt(2) == 0 ? 0 : mScreenWidth, 
+						rand.nextInt(spawnHeightBound));
 			sprite.SetVelocity(rand.nextInt(7) - 2,
 							   rand.nextInt(7) - 2);
 			break;
@@ -729,7 +775,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			sprite = new AlienSprite(gJellyBitmap, rcBounds, 
 									 BOUNDSACTION.BA_BOUNCE);
 			sprite.SetNumFrames(8, false);
-			sprite.SetPosition(rand.nextInt(600), rand.nextInt(370));
+			sprite.SetPosition(rand.nextInt(2) == 0 ? 0 : mScreenWidth, 
+					rand.nextInt(mGameHeight - gDesertBitmap.getHeight()));
 			sprite.SetVelocity(rand.nextInt(5) - 2,
 							   rand.nextInt(5) + 3);
 			break;
@@ -738,7 +785,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			sprite = new AlienSprite(gTimmyBitmap, rcBounds, 
 									 BOUNDSACTION.BA_WRAP);
 			sprite.SetNumFrames(8, false);
-			sprite.SetPosition(rand.nextInt(600), rand.nextInt(370));
+			sprite.SetPosition(rand.nextInt(2) == 0 ? 0 : mScreenWidth, 
+					rand.nextInt(mGameHeight - gDesertBitmap.getHeight()));
 			sprite.SetVelocity(rand.nextInt(7) + 3, 0);
 			break;
 		}
