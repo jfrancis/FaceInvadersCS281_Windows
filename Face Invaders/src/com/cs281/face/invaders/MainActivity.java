@@ -244,7 +244,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gBackground = new StarryBackground(480, 800, 100, 50);
 		
 		// Start the game for demo mode
-		gDemo = true;
+		gDemo = false;
 		NewGame();
 	}
 	
@@ -284,7 +284,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		{
 			// Resume the background music
 			// TODO: Add Android sound code
-			//gGame.PlayMIDISong("", false);
+			gGame.PlayMIDISong();
 		}
 	}
 	

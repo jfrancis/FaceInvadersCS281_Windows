@@ -7,7 +7,10 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
+
+import java.io.IOException;
 import java.util.Vector;
+import android.media.MediaPlayer;
 
 //-----------------------------------------------------------------
 //GameEngine Class
@@ -19,6 +22,7 @@ public class GameEngine
 	public int m_iWidth, m_iHeight;
 	public int m_iFrameDelay;
 	public boolean  m_bSleep;
+	public MediaPlayer myMidi;
 	
 	private Vector<Sprite> m_vSprites = new Vector<Sprite>();
 	
@@ -53,6 +57,8 @@ public class GameEngine
 		m_iHeight = iHeight;
 		m_iFrameDelay = 50;   // 20 FPS default
 		m_bSleep = true;
+		myMidi = new MediaPlayer();
+		
 	}
 	
 	public void AddSprite(Sprite sprite)
@@ -165,12 +171,35 @@ public class GameEngine
 		return null;
 	}
 	
-	/*public void                PlayMIDISong(LPTSTR szMIDIFileName = TEXT(""),
-	                     BOOL bRestart = TRUE);
-	public void                PauseMIDISong();
-	public void                CloseMIDIPlayer();
-	* TODO: Add Android sound methods
-	*/
+	public void PlayMIDISong()
+	{
+		try {
+			myMidi.setDataSource("http://www.vanderbilt.edu/ConcertChoir/Alma-Mater.mp3");
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			myMidi.prepare();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		myMidi.start();
+	}
+	public void PauseMIDISong() {}
+	public void CloseMIDIPlayer(){}
+	// TODO: Add Android sound methods
+	
 	
 	public void SetFrameRate(int iFrameRate) 
 	{
