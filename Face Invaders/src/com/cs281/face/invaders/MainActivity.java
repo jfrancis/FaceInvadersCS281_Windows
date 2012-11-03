@@ -346,8 +346,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 						      null);
 			
 			// Draw the hi scores
-			int x = mScreenWidth - 25;
-			int y = 20;
+			int x = mScreenWidth / 2;
+			int y = mGameHeight / 2 - gSplashBitmap.getHeight() / 2 + 235;
 			
 			textPaint.setTextAlign(Align.CENTER);
 			
