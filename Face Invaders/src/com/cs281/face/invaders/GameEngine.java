@@ -19,7 +19,6 @@ public class GameEngine
 {
 
 	// Member Variables
-	public int m_iWidth, m_iHeight;
 	public int m_iFrameDelay;
 	public boolean  m_bSleep;
 	public MediaPlayer myMidi;
@@ -51,10 +50,8 @@ public class GameEngine
 	}
 	
 	// Constructor
-	public GameEngine(int iWidth, int iHeight)
+	public GameEngine()
 	{
-		m_iWidth = iWidth;
-		m_iHeight = iHeight;
 		m_iFrameDelay = 50;   // 20 FPS default
 		m_bSleep = true;
 		myMidi = new MediaPlayer();
