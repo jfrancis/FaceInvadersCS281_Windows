@@ -28,6 +28,9 @@ BOOL warpingBullet = 0;
 BOOL piercingBullet = 0;
 BOOL explosiveBullet = 0;
 
+//counter for recurring missiles
+int recurringMissiles = 0;
+
 
 BOOL GameInitialize(HINSTANCE hInstance)
 {
@@ -298,7 +301,7 @@ void HandleKeys()
       // Reset the input delay
       _iFireInputDelay = 0;
 
-		}else if (bouncingBullet)
+		}else if (bouncingBullet && recurringMissiles < 30)
 		{
 			 // Create a new missile sprite
       RECT  rcBounds = { 0, 0, 600, 450 };
@@ -307,7 +310,7 @@ void HandleKeys()
       pSprite->SetPosition(rcPos.left + 15, 400);
       pSprite->SetVelocity(0, -7);
       _pGame->AddSprite(pSprite);
-
+	  recurringMissiles++;
       // Play the missile (fire) sound
       PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
         SND_RESOURCE | SND_NOSTOP);
@@ -315,7 +318,7 @@ void HandleKeys()
       // Reset the input delay
       _iFireInputDelay = 0;
 
-		}else if (warpingBullet)
+		}else if (warpingBullet  && recurringMissiles < 30)
 		{
 			 // Create a new missile sprite
       RECT  rcBounds = { 0, 0, 600, 450 };
@@ -324,7 +327,7 @@ void HandleKeys()
       pSprite->SetPosition(rcPos.left + 15, 400);
       pSprite->SetVelocity(0, -7);
       _pGame->AddSprite(pSprite);
-
+	  recurringMissiles++;
       // Play the missile (fire) sound
       PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
         SND_RESOURCE | SND_NOSTOP);
@@ -401,16 +404,32 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 	{
 		if (pHitter == _pMissileBitmap)
 		{
+			if (pSpriteHitter->returnBoundsAction() == BA_BOUNCE || pSpriteHitter->returnBoundsAction() == BA_WRAP)
+				recurringMissiles--;
 			pSpriteHittee->Kill();
 		}else
 		{
+			if (pSpriteHittee->returnBoundsAction() == BA_BOUNCE || pSpriteHitter->returnBoundsAction() == BA_WRAP)
+				recurringMissiles--;
 			pSpriteHitter->Kill();
 		}
 
 	}else
 	{
+	if (pHitter == _pMissileBitmap)
+		{
+			if (pSpriteHitter->returnBoundsAction() == BA_BOUNCE || pSpriteHitter->returnBoundsAction() == BA_WRAP)
+				recurringMissiles--;
+		}else
+		{
+			if (pSpriteHittee->returnBoundsAction() == BA_BOUNCE || pSpriteHitter->returnBoundsAction() == BA_WRAP)
+				recurringMissiles--;
+		}
+
     pSpriteHitter->Kill();
     pSpriteHittee->Kill();
+	
+	
 	}
     // Create a large explosion sprite at the alien's position
     RECT rcBounds = { 0, 0, 600, 450 };
@@ -441,29 +460,50 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 //powerup hitting car code
   if ((pHitter == _pCarBitmap && pHittee == _pPowerUpBitmap) || (pHitter == _pPowerUpBitmap && pHittee == _pCarBitmap)) 
   {
-	  spreadShot = 0;
-      bouncingBullet = 0;
-	  warpingBullet = 0;
-	  piercingBullet = 0;
-	  explosiveBullet = 0;
+	
 	  int powerupNumber = rand() % 6;
 	  if (powerupNumber  == 0)
 	  {
 		  ++_iNumLives;
 	  }else if (powerupNumber == 1)
 	  {
+		    spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
 		  spreadShot = 1;
 	  }else if (powerupNumber == 2)
 	  {
+		    spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
 		  bouncingBullet = 1;
 	  }else if (powerupNumber == 3)
 	  {
+		    spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
 		  warpingBullet = 1;
 	  }else if (powerupNumber == 4)
 	  {
+		    spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
 		  piercingBullet = 1;
 	  }else if (powerupNumber == 5)
 	  {
+		    spreadShot = 0;
+      bouncingBullet = 0;
+	  warpingBullet = 0;
+	  piercingBullet = 0;
+	  explosiveBullet = 0;
 		  explosiveBullet = 1;
 	  }
 	  if (pHitter == _pPowerUpBitmap)
