@@ -39,6 +39,7 @@ Bitmap*           _pSmExplosionBitmap;
 Bitmap*           _pLgExplosionBitmap;
 Bitmap*           _pGameOverBitmap;
 Bitmap*			  _pPowerUpBitmap;
+Bitmap*			  _pExplosionPowerBitmap;
 StarryBackground* _pBackground;
 Sprite*           _pCarSprite;
 int               _iFireInputDelay;

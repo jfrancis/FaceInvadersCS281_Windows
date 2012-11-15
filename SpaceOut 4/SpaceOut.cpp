@@ -65,6 +65,7 @@ void GameStart(HWND hWindow)
 
   // Create and load the bitmaps
   LPTSTR powerup1 = "powerup1.bmp";
+  LPTSTR explosionPowerupBMP = "Explosion.bmp";
   HDC hDC = GetDC(hWindow);
   _pSplashBitmap = new Bitmap(hDC, IDB_SPLASH, _hInstance);
   _pDesertBitmap = new Bitmap(hDC, IDB_DESERT, _hInstance);
@@ -81,6 +82,7 @@ void GameStart(HWND hWindow)
   _pLgExplosionBitmap = new Bitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new Bitmap(hDC, IDB_GAMEOVER, _hInstance);
   _pPowerUpBitmap = new Bitmap(hDC, powerup1);
+  _pExplosionPowerBitmap = new Bitmap(hDC, explosionPowerupBMP);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -115,6 +117,7 @@ void GameEnd()
   delete _pLgExplosionBitmap;
   delete _pGameOverBitmap;
   delete _pPowerUpBitmap;
+  delete _pExplosionPowerBitmap;
 
   // Cleanup the background
   delete _pBackground;
@@ -390,6 +393,60 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   // See if a player missile and an alien have collided
   Bitmap* pHitter = pSpriteHitter->GetBitmap();
   Bitmap* pHittee = pSpriteHittee->GetBitmap();
+
+   if ((pHitter == _pExplosionPowerBitmap && (pHittee == _pBlobboBitmap ||
+    pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
+    (pHittee == _pExplosionPowerBitmap && (pHitter == _pBlobboBitmap ||
+    pHitter == _pJellyBitmap || pHitter == _pTimmyBitmap)))
+   {
+	   
+    // Play the small explosion sound
+    PlaySound((LPCSTR)IDW_LGEXPLODE, _hInstance, SND_ASYNC |
+      SND_RESOURCE);
+
+
+	
+    // Kill both sprites
+	
+	if (pHitter == _pExplosionPowerBitmap)
+	{
+		pSpriteHittee->Kill();
+	}else
+	{
+		pSpriteHitter->Kill();
+	}
+    pSpriteHitter->Kill();
+    pSpriteHittee->Kill();
+	
+	
+    // Create a large explosion sprite at the alien's position
+   /* RECT rcBounds = { 0, 0, 600, 450 };
+    RECT rcPos;
+    if (pHitter == _pMissileBitmap)
+      rcPos = pSpriteHittee->GetPosition();
+    else
+      rcPos = pSpriteHitter->GetPosition();
+    Sprite* pSprite = new Sprite(_pLgExplosionBitmap, rcBounds);
+    pSprite->SetNumFrames(8, TRUE);
+    pSprite->SetPosition(rcPos.left, rcPos.top);
+    _pGame->AddSprite(pSprite);
+	*/
+	if /*((rand() % 6) == 4)*/ (1)//random powerup addition code
+	{
+	  RECT  rcBounds = { 0, 0, 450, 450 };
+      RECT  rcPos = pSpriteHitter->GetPosition();
+      Sprite* pSprite = new Sprite(_pPowerUpBitmap, rcBounds, BA_DIE);
+      pSprite->SetPosition(rcPos.left, rcPos.top);
+      pSprite->SetVelocity(0, 4);
+      _pGame->AddSprite(pSprite);
+	}
+
+    // Update the score
+    _iScore += 25;
+    _iDifficulty = max(80 - (_iScore / 20), 20);
+   }
+
+
   if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
     pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
     (pHittee == _pMissileBitmap && (pHitter == _pBlobboBitmap ||
@@ -398,6 +455,9 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     // Play the small explosion sound
     PlaySound((LPCSTR)IDW_LGEXPLODE, _hInstance, SND_ASYNC |
       SND_RESOURCE);
+
+
+	
 
     // Kill both sprites
 	if (piercingBullet)
@@ -432,7 +492,23 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 	
 	}
     // Create a large explosion sprite at the alien's position
-    RECT rcBounds = { 0, 0, 600, 450 };
+    
+	if (explosiveBullet)
+	{
+		  RECT rcBounds = { 0, 0, 600, 450 };
+    RECT rcPos;
+    if (pHitter == _pMissileBitmap)
+      rcPos = pSpriteHittee->GetPosition();
+    else
+      rcPos = pSpriteHitter->GetPosition();
+    Sprite* pSprite = new Sprite(_pExplosionPowerBitmap, rcBounds);
+    pSprite->SetNumFrames(8, TRUE);
+    pSprite->SetPosition(rcPos.left, rcPos.top);
+    _pGame->AddSprite(pSprite);
+	
+	}else
+	{
+		RECT rcBounds = { 0, 0, 600, 450 };
     RECT rcPos;
     if (pHitter == _pMissileBitmap)
       rcPos = pSpriteHittee->GetPosition();
@@ -442,6 +518,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     pSprite->SetNumFrames(8, TRUE);
     pSprite->SetPosition(rcPos.left, rcPos.top);
     _pGame->AddSprite(pSprite);
+	}
 
 	if /*((rand() % 6) == 4)*/ (1)//random powerup addition code
 	{
@@ -457,11 +534,14 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     _iScore += 25;
     _iDifficulty = max(80 - (_iScore / 20), 20);
   }
-//powerup hitting car code
+
+  
+
   if ((pHitter == _pCarBitmap && pHittee == _pPowerUpBitmap) || (pHitter == _pPowerUpBitmap && pHittee == _pCarBitmap)) 
   {
 	
-	  int powerupNumber = rand() % 6;
+	  //int powerupNumber = rand() % 6;
+	  int powerupNumber = 5;
 	  if (powerupNumber  == 0)
 	  {
 		  ++_iNumLives;
