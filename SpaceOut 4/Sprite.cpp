@@ -8,6 +8,7 @@
 //-----------------------------------------------------------------
 #include "Sprite.h"
 
+
 //-----------------------------------------------------------------
 // Sprite Constructor(s)/Destructor
 //-----------------------------------------------------------------
@@ -80,6 +81,7 @@ SPRITEACTION Sprite::Update()
 {
   // See if the sprite needs to be killed
   if (m_bDying)
+ 
     return SA_KILL;
 
   // Update the frame

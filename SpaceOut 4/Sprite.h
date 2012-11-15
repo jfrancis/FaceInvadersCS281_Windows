@@ -58,6 +58,8 @@ public:
     RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
   virtual ~Sprite();
 
+
+  BOUNDSACTION returnBoundsAction() { return m_baBoundsAction;} //returns bound action to keep track of recurringMissiles
   // General Methods
   virtual SPRITEACTION  Update();
   virtual Sprite*       AddSprite();
