@@ -173,6 +173,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static Bitmap gSmExplosionBitmap;
 	public static Bitmap gLgExplosionBitmap;
 	public static Bitmap gGameOverBitmap;
+	public static Bitmap gPowerUpBitmap;
+	public static Bitmap gExplosionPowerBitmap;
 	
 	public static StarryBackground gBackground;
 	public static Sprite gCarSprite;
@@ -201,6 +203,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static boolean gPiercingBullet = false;
 	public static boolean gExplosiveBullet = false;
 	
+	// counter for recurring missiles
+	public static int gRecurringMissiles = 0;
 	
 	public final static boolean GameInitialize()
 	{
@@ -252,6 +256,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 														  R.drawable.lgexplosion);
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									   R.drawable.gameover);
+		gPowerUpBitmap = BitmapFactory.decodeResource(mContext.getResources(),
+													  R.drawable.powerup1);
+		gExplosionPowerBitmap = BitmapFactory.decodeResource(
+												       mContext.getResources(),
+												       R.drawable.explosion);
 		
 		gBackground = new StarryBackground(mScreenWidth, mGameHeight, 100, 50);
 		
@@ -503,7 +512,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					// Reset the input delay
 					gFireInputDelay = 0;
 				}
-				else if (gBouncingBullet)
+				else if (gBouncingBullet && gRecurringMissiles < 30)
 				{
 					// Create a new missile sprite
 					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
@@ -515,13 +524,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
+					gRecurringMissiles++;
 					// Play the missile (fire) sound
 					// TODO: Android code
 					
 					// Reset the input delay
 					gFireInputDelay = 0;
 				}
-				else if (gWarpingBullet)
+				else if (gWarpingBullet && gRecurringMissiles < 30)
 				{
 					// Create a new missile sprite
 					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
@@ -533,6 +543,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					sprite.SetVelocity(0, missileVelocity);
 					gGame.AddSprite(sprite);
 					
+					gRecurringMissiles++;
 					// Play the missile (fire) sound
 					// TODO: Android code
 					
@@ -584,6 +595,45 @@ public class MainActivity extends Activity implements OnTouchListener {
 		Bitmap hitter = spriteHitter.GetBitmap();
 		Bitmap hittee = spriteHittee.GetBitmap();
 		
+		Random random = new Random();
+		
+		if ((hitter == gExplosionPowerBitmap && (hittee == gBlobboBitmap ||
+				hittee == gJellyBitmap || hittee == gTimmyBitmap)) ||
+				(hittee == gExplosionPowerBitmap && (hitter == gBlobboBitmap ||
+				hitter == gJellyBitmap || hitter == gTimmyBitmap)))
+		{
+			// Play the explosion sound
+			// TODO: Android code
+			
+			// Kill both sprites
+			if (hitter == gExplosionPowerBitmap)
+			{
+				spriteHittee.Kill();
+			}
+			else
+			{
+				spriteHitter.Kill();
+			}
+			
+			spriteHitter.Kill();
+			spriteHittee.Kill();
+			
+			if (random.nextInt(6) == 4)
+			{
+				Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
+				Rect rcPos = spriteHitter.GetPosition();
+				Sprite sprite = new Sprite(gPowerUpBitmap, rcBounds,
+										   BOUNDSACTION.BA_DIE);
+				sprite.SetPosition(rcPos.left, rcPos.top);
+				sprite.SetVelocity(0, 4);
+				gGame.AddSprite(sprite);
+			}
+			
+			// Update the score
+			gScore += 25;
+			gDifficulty = Math.max(80 - (gScore / 20), 20);
+		}
+		
 		if ((hitter == gMissileBitmap && (hittee == gBlobboBitmap ||
 			hittee == gJellyBitmap || hittee == gTimmyBitmap)) ||
 			(hittee == gMissileBitmap && (hitter == gBlobboBitmap ||
@@ -597,15 +647,41 @@ public class MainActivity extends Activity implements OnTouchListener {
 			{
 				if (hitter == gMissileBitmap)
 				{
+					if (spriteHitter.mBoundsAction == BOUNDSACTION.BA_BOUNCE ||
+						spriteHitter.mBoundsAction == BOUNDSACTION.BA_WRAP)
+					{
+						gRecurringMissiles--;
+					}
 					spriteHittee.Kill();
 				}
 				else
 				{
+					if (spriteHittee.mBoundsAction == BOUNDSACTION.BA_BOUNCE ||
+						spriteHittee.mBoundsAction == BOUNDSACTION.BA_WRAP)
+					{
+						gRecurringMissiles--;
+					}
 					spriteHitter.Kill();
 				}
 			}
 			else
 			{
+				if (hitter == gMissileBitmap)
+				{
+					if (spriteHitter.mBoundsAction == BOUNDSACTION.BA_BOUNCE ||
+						spriteHitter.mBoundsAction == BOUNDSACTION.BA_WRAP)
+					{
+						gRecurringMissiles--;
+					}
+				}
+				else
+				{
+					if (spriteHittee.mBoundsAction == BOUNDSACTION.BA_BOUNCE ||
+						spriteHittee.mBoundsAction == BOUNDSACTION.BA_WRAP)
+					{
+						gRecurringMissiles--;
+					}
+				}
 				spriteHitter.Kill();
 				spriteHittee.Kill();
 			}
@@ -614,24 +690,117 @@ public class MainActivity extends Activity implements OnTouchListener {
 			Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 			Rect rcPos;
 			
-			if (hitter == gMissileBitmap)
-			{
-				rcPos = spriteHittee.GetPosition();
+			if (gExplosiveBullet)
+			{				
+				if (hitter == gMissileBitmap)
+				{
+					rcPos = spriteHittee.GetPosition();
+				}
+				else
+				{
+					rcPos = spriteHitter.GetPosition();
+				}
+			
+				Sprite sprite = new Sprite(gExplosionPowerBitmap, rcBounds,
+										   BOUNDSACTION.BA_STOP);
+				sprite.SetNumFrames(8, true);
+				sprite.SetPosition(rcPos.left, rcPos.top);
+				gGame.AddSprite(sprite);
+			
 			}
 			else
 			{
-				rcPos = spriteHitter.GetPosition();
+				if (hitter == gMissileBitmap)
+				{
+					rcPos = spriteHittee.GetPosition();
+				}
+				else
+				{
+					rcPos = spriteHitter.GetPosition();
+				}
+				
+				Sprite sprite = new Sprite(gLgExplosionBitmap, rcBounds,
+										   BOUNDSACTION.BA_STOP);
+				
+				sprite.SetNumFrames(8,  true);
+				sprite.SetPosition(rcPos.left, rcPos.top);
+				gGame.AddSprite(sprite);
 			}
 			
-			Sprite sprite = new Sprite(gLgExplosionBitmap, rcBounds,
-									   BOUNDSACTION.BA_STOP);
-			sprite.SetNumFrames(8, true);
-			sprite.SetPosition(rcPos.left, rcPos.top);
-			gGame.AddSprite(sprite);
+			if (random.nextInt(6) == 4)
+			{
+				rcPos = spriteHitter.GetPosition();
+				Sprite sprite = new Sprite(gPowerUpBitmap, rcBounds, 
+										   BOUNDSACTION.BA_DIE);
+				sprite.SetPosition(rcPos.left, rcPos.right);
+				sprite.SetVelocity(0, 4);
+				gGame.AddSprite(sprite);
+			}
 			
 			// Update the score
 			gScore += 25;
 			gDifficulty = Math.max(80 - (gScore / 20), 20);
+		}
+		
+		// Powerup hitting car code
+		if ((hitter == gCarBitmap && hittee == gPowerUpBitmap) ||
+			(hitter == gPowerUpBitmap && hittee == gCarBitmap))
+		{
+			int powerupNumber = random.nextInt(6);
+			
+			if (powerupNumber == 0)
+			{
+				++gNumLives;
+			} 
+			else if (powerupNumber == 1)
+			{
+				gBouncingBullet = false;
+				gWarpingBullet = false;
+				gPiercingBullet = false;
+				gExplosiveBullet = false;
+				gSpreadShot = true;
+			} 
+			else if (powerupNumber == 2)
+			{
+				gSpreadShot = false;
+				gWarpingBullet = false;
+				gPiercingBullet = false;
+				gExplosiveBullet = false;
+				gBouncingBullet = true;
+			}
+			else if (powerupNumber == 3)
+			{
+				gSpreadShot = false;
+				gBouncingBullet = false;
+				gPiercingBullet = false;
+				gExplosiveBullet = false;
+				gWarpingBullet = true;
+			}
+			else if (powerupNumber == 4)
+			{
+				gSpreadShot = false;
+				gBouncingBullet = false;
+				gWarpingBullet = false;
+				gExplosiveBullet = false;
+				gPiercingBullet = true;
+			}
+			else if (powerupNumber == 5)
+			{
+				gSpreadShot = false;
+				gBouncingBullet = false;
+				gWarpingBullet = false;
+				gPiercingBullet = false;
+				gExplosiveBullet = true;
+			}
+			
+			if (hitter == gPowerUpBitmap)
+			{
+				spriteHitter.Kill();
+			}
+			else
+			{
+				spriteHittee.Kill();
+			}
 		}
 		
 		// See if an alien missile has collided with the car
@@ -727,6 +896,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gNumLives = 3;
 		gDifficulty = 80;
 		gGameOver = false;
+		
+		gBouncingBullet = false;
+		gWarpingBullet = false;
+		gPiercingBullet = false;
+		gExplosiveBullet = false;
+		gSpreadShot = false;
+		gRecurringMissiles = 0;
 		
 		if (gDemo)
 		{
