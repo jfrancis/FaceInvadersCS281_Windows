@@ -2,8 +2,11 @@ package com.cs281.face.invaders;
 
 import android.graphics.*;
 import android.graphics.Paint.Style;
-
 import java.util.Random;
+
+
+// StarryBackground class : Contains information about desired game background
+//   Current background is twinkling stars
 
 public class StarryBackground extends Background
 {
@@ -35,13 +38,13 @@ public class StarryBackground extends Background
 	}
 	
 	// General Methods
+	
 	@Override
 	public void Update()
 	{	
 		// Randomly change the shade of the stars so that they twinkle
 		
 		Random rand = new Random();
-		
 		int iRGB;
 		
 		for (int i = 0; i < mNumStars; i++)

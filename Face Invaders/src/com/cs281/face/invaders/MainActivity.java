@@ -23,6 +23,13 @@ import java.util.Random;
 import com.cs281.face.invaders.Sprite.BOUNDSACTION;
 import com.cs281.face.invaders.R;
 
+
+//MainActivity class: Primary Android interaction class
+//  Contains methods called to start, pause, resume, and end application,
+//  as well as methods for user interaction and error handling
+//  Also contains implementations of special game power-ups
+//  and additional game play options
+
 public class MainActivity extends Activity implements OnTouchListener {
 
 	private RenderView mRenderView;
@@ -33,7 +40,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 	static public int mGroundLevel;
 	static public int mButtonAreaHeight = 100;
 	
+	// Primary Android Activity methods
+	
     @Override
+    // First start of application
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -66,6 +76,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     }
     
     @Override
+    // Begin user interactions
     protected void onResume()
     {
     	super.onResume();
@@ -75,6 +86,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     }
     
     @Override
+    // Will resume activity soon
     protected void onPause()
     {
     	super.onPause();
@@ -84,12 +96,12 @@ public class MainActivity extends Activity implements OnTouchListener {
     }
     
     @Override
+    // End applicaton
     protected void onDestroy()
     {
     	GameEnd();
     }
     
-    @Override
     public boolean onTouch(View v, MotionEvent event)
     {
     	if (event.getAction() == MotionEvent.ACTION_DOWN)
@@ -150,14 +162,15 @@ public class MainActivity extends Activity implements OnTouchListener {
     	}
     }
     
-    // Added to allow loading of Bitmaps. May be a better way
+    // Added to allow loading of Bitmaps. Could revise in future
     private static Context mContext;
+    
     /**
-     * Code from SpaceOut.cpp. TODO: Should this be in this class???
+     * Code from SpaceOut.cpp.
      */
-	//-----------------------------------------------------------------
+
 	// Global Variables
-	//-----------------------------------------------------------------
+
 	public static GameEngine gGame;
 	public static Bitmap gSplashBitmap;
 	public static Bitmap gDesertBitmap;
@@ -187,8 +200,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static boolean gDemo;
 	public static int gHiScores[] = new int[5];
 	
-	//Global variables added by Daniel Dudugjian
-	//These serve as flags to modify the game when powerups are used.
+	// Global variables added by Daniel Dudugjian
+	// These serve as flags to modify the game when powerups are used.
+	
 	/*Spread shot powerup.
 	Good music.
 	Extra Life powerup.
@@ -197,6 +211,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	Laser powerup.
 	Shields.
 	Explosive Missile.*/
+	
 	public static boolean gSpreadShot = false;
 	public static boolean gBouncingBullet = false;
 	public static boolean gWarpingBullet = false;
@@ -225,7 +240,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// Read the hi scores
 		ReadHiScores();
 		
-		// TODO: Create offscreen bitmap??? May need to if graphics flicker
+		// Could create off-screen bitmap if graphics flicker
 		
 		// Load the Bitmaps
 		gSplashBitmap = BitmapFactory.decodeResource(mContext.getResources(),
@@ -273,10 +288,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	
 	public final static void GameEnd()
 	{
-		// TODO: This line may change for the Android platform
-		//gGame.CloseMIDIPlayer();
+		// This line may be changed with future music additions
+		// gGame.CloseMIDIPlayer();
 		
-		// TODO: Is this necessary since Java does Garbage Collection???
 		gGame.CleanupSprites();
 		
 		// Save the hi scores
@@ -288,6 +302,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// Displays the error message in a message box
 		AlertDialog dispError = new AlertDialog.Builder(this).create();  
 		dispError.setTitle("Error");
+		
 		// Use below if necessary
 		//dispError.setCancelable(false); // This blocks the 'BACK' button  
 		dispError.setMessage(errorMsg);  
@@ -300,29 +315,26 @@ public class MainActivity extends Activity implements OnTouchListener {
 		dispError.show();
 	}
 	
-	// TODO: Is this method necessary on the Android platform?
 	public final static void GameActivate()
 	{
 		if (!gDemo)
 		{
 			// Resume the background music
-			// TODO: Add Android sound code
+			// TODO: Change with music edits
 			gGame.PlayMIDISong();
 		}
 	}
 	
-	// TODO: Is this method necessary on the Android platform?
 	public final static void GameDeactivate()
 	{
 		if (!gDemo)
 		{
 			// Pause the background music
-			// TODO: Add Android sound code
+			// TODO: Change with music edits
 			//gGame.PauseMIDISong();
 		}
 	}
 	
-	// TODO: Add Android specific drawing code
 	public final static void GamePaint(Canvas canvas)
 	{
 		// Draw the background
@@ -370,7 +382,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				y += hiScoreSpacing;
 			}
 		}
-		else
+		else // In game
 		{
 			// Draw the score
 			String text = String.format("%d", gScore);
@@ -427,16 +439,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 			if (--gGameOverDelay == 0)
 			{
 				// Stop the music and switch to demo mode
-				// TODO: Add Android sound code
-				//gGame.PauseMIDISong();
+				// TODO: Change with music edits
+				// gGame.PauseMIDISong();
 				gDemo = true;
 				NewGame();
 			}
 		}
 	}
 	
-	// TODO: This method is probably going to need a major Android overhaul
-	//		 to properly handle touch screen input
+	// TODO: This method may need further changes for touch screen input
 	public final static void HandleKeys(float x, float y)
 	{
 		final int missileVelocity = -13;
@@ -446,7 +457,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Move the car based upon left/right key presses
 			Point ptVelocity = new Point(gCarSprite.GetVelocity());
 			
-			if ((++gMovementDelay > 2) && x < gCarSprite.mRcPosition.left && y > 400)///*LEFTKEYPRESSED*/false /*TODO: Replace*/)
+			if ((++gMovementDelay > 2) && x < gCarSprite.mRcPosition.left && y > 400)
+				///*LEFTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move left
 				if (ptVelocity.x > 0)
@@ -461,7 +473,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 				gCarSprite.SetVelocity(ptVelocity);
 				gMovementDelay = 0;
 			}
-			else if ((++gMovementDelay > 2) && x > gCarSprite.mRcPosition.left && y > 400)///*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
+			else if ((++gMovementDelay > 2) && x > gCarSprite.mRcPosition.left && y > 400)
+				///*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
 			{
 				// Move right
 				if (ptVelocity.x < 0)
@@ -478,8 +491,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 2)) //&& /*SPACEPRESSED*/false /*TODO: Replace*/)
+			if ((++gFireInputDelay > 2)) 
+				//&& /*SPACEPRESSED*/false /*TODO: Replace*/)
 			{
+				// Fires three sprites in different directions
 				if (gSpreadShot)
 				{
 					// Create a new missile sprite
@@ -507,11 +522,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 					gGame.AddSprite(sprite);
 					
 					// Play the missile (fire) sound
-					// TODO: Android code
+					// TODO: Android music code
 					
 					// Reset the input delay
 					gFireInputDelay = 0;
 				}
+				// Bullet bounces in screen area
 				else if (gBouncingBullet && gRecurringMissiles < 30)
 				{
 					// Create a new missile sprite
@@ -526,11 +542,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 					
 					gRecurringMissiles++;
 					// Play the missile (fire) sound
-					// TODO: Android code
+					// TODO: Android music code
 					
 					// Reset the input delay
 					gFireInputDelay = 0;
 				}
+				// Bullet runs from bottom to top of screen continuously
 				else if (gWarpingBullet && gRecurringMissiles < 30)
 				{
 					// Create a new missile sprite
@@ -545,14 +562,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 					
 					gRecurringMissiles++;
 					// Play the missile (fire) sound
-					// TODO: Android code
+					// TODO: Android music code
 					
 					// Reset the input delay
 					gFireInputDelay = 0;
 				}
 				else
 				{
-					// Create a new missile sprite
+					// Create a new standard missile sprite
 					Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 					Rect rcPos = gCarSprite.GetPosition();
 					Sprite sprite = new Sprite(gMissileBitmap, rcBounds,
@@ -563,7 +580,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 					gGame.AddSprite(sprite);
 					
 					// Play the missile (fire) sound
-					// TODO: Android code
+					// TODO: Android music code
 					
 					// Reset the input delay
 					gFireInputDelay = 0;
@@ -603,7 +620,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				hitter == gJellyBitmap || hitter == gTimmyBitmap)))
 		{
 			// Play the explosion sound
-			// TODO: Android code
+			// TODO: Android music code
 			
 			// Kill both sprites
 			if (hitter == gExplosionPowerBitmap)
@@ -640,7 +657,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			hitter == gJellyBitmap || hitter == gTimmyBitmap)))
 		{
 			// Play the small explosion sound
-			// TODO: Android code
+			// TODO: Android music code
 			
 			// Kill both sprites
 			if (gPiercingBullet)
@@ -742,7 +759,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			gDifficulty = Math.max(80 - (gScore / 20), 20);
 		}
 		
-		// Powerup hitting car code
+		// Power-up hitting car code
 		if ((hitter == gCarBitmap && hittee == gPowerUpBitmap) ||
 			(hitter == gPowerUpBitmap && hittee == gCarBitmap))
 		{
@@ -810,7 +827,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			hitter == gJMissileBitmap || hitter == gTMissileBitmap)))
 		{
 			// Play the large explosion sound
-			// TODO: Android code
+			// TODO: Android music code
 			
 			// Kill the missile sprite
 			if (hitter == gCarBitmap)
@@ -848,7 +865,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			if (--gNumLives == 0)
 			{
 				// Play the game over sound
-				// TODO: Android code
+				// TODO: Android music code
 				
 				gGameOver = true;
 				gGameOverDelay = 150;
@@ -871,7 +888,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Play the small explosion sound
 			if (!gDemo)
 			{
-				// TODO: Android code
+				// TODO: Android music code
 			}
 			
 			// Create a small explosion sprite at the missile's position
@@ -1005,6 +1022,5 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// TODO: Android code to write hi scores to a file
 		return false;
 	}
-	
 	
 }

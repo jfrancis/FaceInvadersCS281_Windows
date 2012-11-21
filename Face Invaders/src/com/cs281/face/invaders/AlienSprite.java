@@ -4,6 +4,8 @@ import android.graphics.*;
 import java.util.Random;
 
 
+// AlienSprite class: Implementation of Alien Sprites (Blobbo, Jelly, Timmy)
+
 public class AlienSprite extends Sprite {
 	
 	// Constructor

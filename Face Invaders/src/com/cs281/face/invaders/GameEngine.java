@@ -1,20 +1,18 @@
-//Kevin Zeillmann
-//John Francis
-//Amber Shindhelm
-//Last changed: 10/27/12
-
+// Kevin Zeillmann
+// John Francis
+// Amber Shindhelm
+// Last changed: 11/20/12
 
 package com.cs281.face.invaders;
 
 import android.graphics.*;
-
+import android.media.MediaPlayer;
 import java.io.IOException;
 import java.util.Vector;
-import android.media.MediaPlayer;
 
-//-----------------------------------------------------------------
-//GameEngine Class
-//-----------------------------------------------------------------
+
+// GameEngine class: Contains primary Sprite methods for use in game execution
+
 public class GameEngine
 {
 
@@ -28,28 +26,24 @@ public class GameEngine
 	// Helper Methods
 	protected boolean CheckSpriteCollision(Sprite testSprite)
 	{
-		int vectorSize = m_vSprites.size();//makes code slightly faster
+		int vectorSize = m_vSprites.size(); // Makes code slightly faster
 		for(int i = 0; i < vectorSize; ++i)
 		{
 			if(testSprite == m_vSprites.get(i))
 			{
-				//do nothing
-				//we don't care if an object collides with itself
+				// We don't care if an object collides with itself
 			}
 			else if(m_vSprites.get(i).TestCollision(testSprite))
 			{
+				// Sprite collision occurred
 				return MainActivity.SpriteCollision(m_vSprites.get(i), testSprite);
-			}
-			else
-			{
-				//do nothing - we didn't collide
 			}
 		}
 		
 		return false;
 	}
 	
-	// Constructor
+	// Base Constructor
 	public GameEngine()
 	{
 		m_iFrameDelay = 50;   // 20 FPS default
@@ -66,8 +60,8 @@ public class GameEngine
 			// See if there are sprites already in the sprite vector
 			if (m_vSprites.size() > 0)
 			{
-				// Find a spot in the sprite vector to insert the sprite by 
-				// its z-order
+				// Find a spot in the sprite vector to insert the sprite
+				// by its z-order
 				int len = m_vSprites.size();
 				for (int i = 0; i < len; i++)
 				{
@@ -89,7 +83,7 @@ public class GameEngine
 	
 	public void DrawSprites(Canvas canvas)
 	{
-		  // Draw the sprites in the sprite vector
+		// Draw the sprites in the sprite vector
 		int vectorSize = m_vSprites.size();
 		for(int i = 0; i < vectorSize; ++i)
 		{
@@ -130,7 +124,7 @@ public class GameEngine
 			    // Kill the sprite
 			    m_vSprites.remove(i);
 			    len--;
-			    i--; // TODO: is this necessary?
+			    i--;
 			    
 			    continue;
 			}
@@ -154,10 +148,8 @@ public class GameEngine
 	{
 		// Iterate through our sprites vector
 		// If we find a sprite that matches, we return it
-		
-		// Question: Should this be rewritten using iterators?
-		// Notworthit.jpg
-		int vectorSize = m_vSprites.size(); //makes code slightly faster
+
+		int vectorSize = m_vSprites.size(); // makes code slightly faster
 		for(int i = 0; i < vectorSize; ++i)
 		{
 			if(!m_vSprites.get(i).IsHidden() && 
@@ -170,33 +162,33 @@ public class GameEngine
 	
 	public void PlayMIDISong()
 	{
+		// Select location of music file
 		try {
 			myMidi.setDataSource("http://www.vanderbilt.edu/ConcertChoir/Alma-Mater.mp3");
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		try {
 			myMidi.prepare();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		myMidi.start();
 	}
-	public void PauseMIDISong() {}
-	public void CloseMIDIPlayer(){}
-	// TODO: Add Android sound methods
 	
+	public void PauseMIDISong() {}
+	
+	public void CloseMIDIPlayer() {}
+	
+	// Can add more advanced Android sound methods
 	
 	public void SetFrameRate(int iFrameRate) 
 	{

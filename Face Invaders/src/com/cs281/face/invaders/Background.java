@@ -3,6 +3,9 @@ package com.cs281.face.invaders;
 import android.graphics.*;
 import android.graphics.Paint.Style;
 
+
+// Primary Android background information
+
 public class Background {
 	
 	// Member Variables
@@ -10,7 +13,6 @@ public class Background {
 	protected int mHeight;
 	protected int mColor;
 	protected Bitmap mBitmap;
-	
 	
 	// Constructors
 	public Background(int width, int height, int color)
@@ -28,7 +30,6 @@ public class Background {
 		mWidth = bmp.getWidth();
 		mHeight = bmp.getHeight();
 	}
-	
 	
 	// General methods
 	public void Update()

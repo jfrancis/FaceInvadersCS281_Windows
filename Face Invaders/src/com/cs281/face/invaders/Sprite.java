@@ -1,12 +1,15 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
-
 import java.util.Random;
+
+
+// Sprite class: Holds Sprite constructors and helper methods
+//   for use in game play
 
 public class Sprite {
 	
-	// SPRITEACTION definitions
+	// Sprite Action (SA) definitions
 	public static final short SA_NONE = 0x0000;
 	public static final short SA_ADDSPRITE = 0x0001;
 	public static final short SA_KILL = 0x0002;
@@ -116,10 +119,7 @@ public class Sprite {
 		mOneCycle = false;
 	}
 	
-	// TODO: It appears that the original code has a couple of mistakes in this
-	// constructor. It is translated directly from the original code, including
-	// the potential typos. May want to determine if these are in fact typos
-	// and fix
+	
 	public Sprite(Bitmap bmp, Point ptPosition, Point ptVelocity, int zOrder,
 				  Rect rcBounds, BOUNDSACTION boundsAction)
 	{
@@ -127,20 +127,13 @@ public class Sprite {
 		mBitmap = bmp;
 		mNumFrames = 1;
 		mCurFrame = mFrameDelay = mFrameTrigger = 0;
+		
 		mRcPosition.set(ptPosition.x, ptPosition.y, 
 						ptPosition.x + mBitmap.getWidth(),
 						ptPosition.y + mBitmap.getHeight()); 
-		// TODO: above may be incorrect,
-		// why doesn't original code add the x and y to getWidth and getHeight
-	    // as it does in the previous constructor? May be a typo in original
-		// code. CHANGED TO MAKE CORRECT
 		
 		CalcCollisionRect();
 		mPtVelocity.set(ptVelocity.x, ptVelocity.y); 
-				     // TODO: Doesn't make any sense right now why original
-					 // code assigns ptPosition to mPtVelocity instead of
-					 // assigning ptVelocity to mPtVelocity. Probably another
-					 // typo. CHANGED TO MAKE CORRECT
 		
 		mZOrder = zOrder;
 		mRcBounds.set(rcBounds);
@@ -174,7 +167,8 @@ public class Sprite {
 		ptBoundsSize.y = mRcBounds.bottom - mRcBounds.top;
 		
 		// Check the bounds
-		// Wrap?
+		
+		// Wrap
 		if (mBoundsAction == BOUNDSACTION.BA_WRAP)
 		{
 			if ((ptNewPosition.x + ptSpriteSize.x) < mRcBounds.left)
@@ -195,7 +189,8 @@ public class Sprite {
 				ptNewPosition.y = mRcBounds.top - ptSpriteSize.y;
 			}
 		}
-		// Bounce?
+		
+		// Bounce
 		else if (mBoundsAction == BOUNDSACTION.BA_BOUNCE)
 		{
 			boolean bounce = false;
@@ -232,7 +227,8 @@ public class Sprite {
 				SetVelocity(ptNewVelocity);
 			}
 		}
-		// Die?
+		
+		// Die
 		else if (mBoundsAction == BOUNDSACTION.BA_DIE)
 		{
 			if ((ptNewPosition.x + ptSpriteSize.x) < mRcBounds.left ||
@@ -243,6 +239,7 @@ public class Sprite {
 				return SA_KILL;
 			}
 		}
+		
 		// Stop (default)
 		else
 		{
@@ -295,8 +292,7 @@ public class Sprite {
 						          new Rect(mRcPosition.left, 
 						        		   mRcPosition.top,
 						        		   mRcPosition.left + GetWidth(),
-						        		   mRcPosition.top + GetHeight()
-						        		   ),
+						        		   mRcPosition.top + GetHeight()),
 						          null);
 			}
 		}
@@ -323,6 +319,7 @@ public class Sprite {
 	
 	
 	// Accessor Methods
+	
 	public final Bitmap GetBitmap()
 	{
 		return mBitmap;
@@ -394,9 +391,7 @@ public class Sprite {
 		SetVelocity(ptVelocity.x, ptVelocity.y);
 	}
 	
-	public final int GetZOrder() // The C++ code includes a boolean return type,
-						   // even though the z order variable is an int.
-						   // Was this a typo in the C++ code? YES
+	public final int GetZOrder()
 	{
 		return mZOrder;
 	}
