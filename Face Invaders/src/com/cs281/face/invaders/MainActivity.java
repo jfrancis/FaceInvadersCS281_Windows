@@ -275,7 +275,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 													  R.drawable.powerup1);
 		gExplosionPowerBitmap = BitmapFactory.decodeResource(
 												       mContext.getResources(),
-												       R.drawable.explosion);
+												       R.drawable.esexplosion);
 		
 		gBackground = new StarryBackground(mScreenWidth, mGameHeight, 100, 50);
 		
@@ -720,7 +720,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			
 				Sprite sprite = new Sprite(gExplosionPowerBitmap, rcBounds,
 										   BOUNDSACTION.BA_STOP);
-				sprite.SetNumFrames(8, true);
+				sprite.SetNumFrames(4, true);
 				sprite.SetPosition(rcPos.left, rcPos.top);
 				gGame.AddSprite(sprite);
 			

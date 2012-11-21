@@ -15,7 +15,7 @@ public final class R {
         public static final int bmissile=0x7f020001;
         public static final int car=0x7f020002;
         public static final int desert=0x7f020003;
-        public static final int explosion=0x7f020004;
+        public static final int esexplosion=0x7f020004;
         public static final int gameover=0x7f020005;
         public static final int ic_action_search=0x7f020006;
         public static final int ic_hamm=0x7f020007;
