@@ -65,7 +65,7 @@ void GameStart(HWND hWindow)
 
   // Create and load the bitmaps
   LPTSTR powerup1 = "powerup1.bmp";
-  LPTSTR explosionPowerupBMP = "Explosion.bmp";
+  LPTSTR explosionPowerupBMP = "ESExplosion.bmp";
   HDC hDC = GetDC(hWindow);
   _pSplashBitmap = new Bitmap(hDC, IDB_SPLASH, _hInstance);
   _pDesertBitmap = new Bitmap(hDC, IDB_DESERT, _hInstance);
@@ -502,7 +502,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     else
       rcPos = pSpriteHitter->GetPosition();
     Sprite* pSprite = new Sprite(_pExplosionPowerBitmap, rcBounds);
-    pSprite->SetNumFrames(8, TRUE);
+    pSprite->SetNumFrames(4, TRUE);
     pSprite->SetPosition(rcPos.left, rcPos.top);
     _pGame->AddSprite(pSprite);
 	
