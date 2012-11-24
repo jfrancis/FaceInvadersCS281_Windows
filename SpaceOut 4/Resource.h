@@ -27,6 +27,8 @@
 #define IDB_LGEXPLOSION       2012
 #define IDB_GAMEOVER          2013
 #define IDB_POWERUP           2014
+#define IDB_BLOBBOF           2015
+#define IDB_JELLYF            2016
 //-----------------------------------------------------------------
 // Wave Sounds                Range : 3000 - 3999
 //-----------------------------------------------------------------

@@ -73,8 +73,10 @@ void GameStart(HWND hWindow)
   _pSmCarBitmap = new Bitmap(hDC, IDB_SMCAR, _hInstance);
   _pMissileBitmap = new Bitmap(hDC, IDB_MISSILE, _hInstance);
   _pBlobboBitmap = new Bitmap(hDC, IDB_BLOBBO, _hInstance);
+  _pBlobboBitmapf = new Bitmap(hDC, IDB_BLOBBOF, _hInstance);//flipped blobbo
   _pBMissileBitmap = new Bitmap(hDC, IDB_BMISSILE, _hInstance);
   _pJellyBitmap = new Bitmap(hDC, IDB_JELLY, _hInstance);
+  _pJellyBitmapf = new Bitmap(hDC, IDB_JELLYF, _hInstance);//flipped jelly
   _pJMissileBitmap = new Bitmap(hDC, IDB_JMISSILE, _hInstance);
   _pTimmyBitmap = new Bitmap(hDC, IDB_TIMMY, _hInstance);
   _pTMissileBitmap = new Bitmap(hDC, IDB_TMISSILE, _hInstance);
@@ -83,7 +85,6 @@ void GameStart(HWND hWindow)
   _pGameOverBitmap = new Bitmap(hDC, IDB_GAMEOVER, _hInstance);
   _pPowerUpBitmap = new Bitmap(hDC, powerup1);
   _pExplosionPowerBitmap = new Bitmap(hDC, explosionPowerupBMP);
-
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
 
@@ -707,17 +708,23 @@ void AddAlien()
   {
   case 0:
     // Blobbo
-    pSprite = new AlienSprite(_pBlobboBitmap, rcBounds, BA_BOUNCE);
+	//editted to allow for flipping
+    pSprite = new AlienSprite(_pBlobboBitmap, rcBounds, BA_BOUNCE, _pBlobboBitmapf);
     pSprite->SetNumFrames(8);
     pSprite->SetPosition(((rand() % 2) == 0) ? 0 : 600, rand() % 370);
     pSprite->SetVelocity((rand() % 7) - 2, (rand() % 7) - 2);
-    break;
+	if(pSprite->GetVelocity().x >0)
+	  pSprite->Flip();
+	break;
   case 1:
     // Jelly
-    pSprite = new AlienSprite(_pJellyBitmap, rcBounds, BA_BOUNCE);
+	//editted to allow for flipping
+    pSprite = new AlienSprite(_pJellyBitmap, rcBounds, BA_BOUNCE, _pJellyBitmapf);
     pSprite->SetNumFrames(8);
     pSprite->SetPosition(rand() % 600, rand() % 370);
     pSprite->SetVelocity((rand() % 5) - 2, (rand() % 5) + 3);
+	if(pSprite->GetVelocity().x >0)
+	  pSprite->Flip();
     break;
   case 2:
     // Timmy
@@ -727,7 +734,6 @@ void AddAlien()
     pSprite->SetVelocity((rand() % 7) + 3, 0);
     break;
   }
-
   // Add the alien sprite
   _pGame->AddSprite(pSprite);
 }

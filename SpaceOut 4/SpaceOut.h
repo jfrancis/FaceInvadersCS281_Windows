@@ -30,8 +30,10 @@ Bitmap*           _pCarBitmap;
 Bitmap*           _pSmCarBitmap;
 Bitmap*           _pMissileBitmap;
 Bitmap*           _pBlobboBitmap;
+Bitmap*           _pBlobboBitmapf;//flipped blobbo
 Bitmap*           _pBMissileBitmap;
 Bitmap*           _pJellyBitmap;
+Bitmap*           _pJellyBitmapf;//flipped jelly
 Bitmap*           _pJMissileBitmap;
 Bitmap*           _pTimmyBitmap;
 Bitmap*           _pTMissileBitmap;

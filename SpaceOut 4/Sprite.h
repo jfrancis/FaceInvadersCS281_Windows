@@ -48,6 +48,8 @@ protected:
   // Helper Methods
   void          UpdateFrame();
   virtual void  CalcCollisionRect();
+  //flip function, does nothing for non-aliens
+  virtual void	Flip();
 
 public:
   // Constructor(s)/Destructor
@@ -192,4 +194,9 @@ inline void Sprite::SetVelocity(POINT ptVelocity)
 {
   m_ptVelocity.x = ptVelocity.x;
   m_ptVelocity.y = ptVelocity.y;
+}
+
+inline void Sprite::Flip()
+{
+	//do nothing
 }

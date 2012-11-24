@@ -112,22 +112,24 @@ SPRITEACTION Sprite::Update()
   // Bounce?
   else if (m_baBoundsAction == BA_BOUNCE)
   {
-		//things for austin to fix (cause sprite to flip if hit boundary)
-	  // also, based on starting velocity, choose starting direction (flip, if starting to the right)
+	  // collission detection issues with flipped sprites
     BOOL bBounce = FALSE;
     POINT ptNewVelocity = m_ptVelocity;
-    if (ptNewPosition.x < m_rcBounds.left)
+    if (ptNewPosition.x < m_rcBounds.left) //if left bounce
     {
+	  Flip(); //flips the sprite if needed
       bBounce = TRUE;
       ptNewPosition.x = m_rcBounds.left;
       ptNewVelocity.x = -ptNewVelocity.x;
     }
-    else if ((ptNewPosition.x + ptSpriteSize.x) > m_rcBounds.right)
+    else if ((ptNewPosition.x + ptSpriteSize.x) > m_rcBounds.right)//else, if right bounce
     {
+      Flip(); //flips the sprite if needed
       bBounce = TRUE;
       ptNewPosition.x = m_rcBounds.right - ptSpriteSize.x;
-      ptNewVelocity.x = -ptNewVelocity.x;
+      ptNewVelocity.x = -ptNewVelocity.x; 
     }
+	//then check y bounce (no need to flip sprite)
     if (ptNewPosition.y < m_rcBounds.top)
     {
       bBounce = TRUE;

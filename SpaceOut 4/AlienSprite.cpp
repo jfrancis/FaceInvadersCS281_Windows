@@ -12,8 +12,10 @@
 // External Global Variables
 //-----------------------------------------------------------------
 extern Bitmap* _pBlobboBitmap;
+extern Bitmap* _pBlobboBitmapf;
 extern Bitmap* _pBMissileBitmap;
 extern Bitmap* _pJellyBitmap;
+extern Bitmap* _pJellyBitmapf;
 extern Bitmap* _pJMissileBitmap;
 extern Bitmap* _pTimmyBitmap;
 extern Bitmap* _pTMissileBitmap;
@@ -23,9 +25,10 @@ extern int     _iDifficulty;
 // AlienSprite Constructor(s)/Destructor
 //-----------------------------------------------------------------
 AlienSprite::AlienSprite(Bitmap* pBitmap, RECT& rcBounds,
-  BOUNDSACTION baBoundsAction) : Sprite(pBitmap, rcBounds,
+  BOUNDSACTION baBoundsAction, Bitmap* pBitmapf) : Sprite(pBitmap, rcBounds,
   baBoundsAction)
 {
+	m_pBitmapf =pBitmapf;
 }
 
 AlienSprite::~AlienSprite()
@@ -77,3 +80,22 @@ Sprite* AlienSprite::AddSprite()
   pSprite->SetPosition(rcPos.left + (GetWidth() / 2), rcPos.bottom);
   return pSprite;
 }
+
+void AlienSprite::Flip(){
+	  if (GetBitmap() == _pBlobboBitmap || GetBitmap() == _pBlobboBitmapf)
+	  {
+			Bitmap* tmp = m_pBitmapf;
+			m_pBitmapf = m_pBitmap;
+			m_pBitmap = tmp;
+	  }
+	  else if (GetBitmap() == _pJellyBitmap || GetBitmap() == _pJellyBitmapf )
+	  {
+			Bitmap* tmp = m_pBitmapf;
+			m_pBitmapf = m_pBitmap;
+			m_pBitmap = tmp;
+		  //jelly needs to be flipped
+	  }
+	  else{
+		//timmy won't need to be flipped
+	  }
+}  

@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Blobbo.bmp" />
+    <None Include="BlobboF.bmp" />
     <None Include="BMissile.bmp" />
     <None Include="BMissile.wav" />
     <None Include="Car.bmp" />
@@ -115,6 +116,7 @@
     <None Include="GameOver.bmp" />
     <None Include="GameOver.wav" />
     <None Include="Jelly.bmp" />
+    <None Include="JellyF.bmp" />
     <None Include="JMissile.bmp" />
     <None Include="JMissile.wav" />
     <None Include="LgExplode.wav" />

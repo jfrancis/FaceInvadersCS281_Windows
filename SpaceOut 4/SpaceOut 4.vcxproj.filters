@@ -116,6 +116,12 @@
     <None Include="SmExplode.wav" />
     <None Include="LgExplode.wav" />
     <None Include="GameOver.wav" />
+    <None Include="BlobboF.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="JellyF.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SpaceOut.rc">
