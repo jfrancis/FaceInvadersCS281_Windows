@@ -82,6 +82,7 @@ Sprite* AlienSprite::AddSprite()
 }
 
 void AlienSprite::Flip(){
+		/* Won't be implemented, due to collission errors
 	  if (GetBitmap() == _pBlobboBitmap || GetBitmap() == _pBlobboBitmapf)
 	  {
 			Bitmap* tmp = m_pBitmapf;
@@ -98,4 +99,5 @@ void AlienSprite::Flip(){
 	  else{
 		//timmy won't need to be flipped
 	  }
+	  */
 }  
