@@ -18,6 +18,7 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.*;
 import java.util.Random;
 
 import com.cs281.face.invaders.Sprite.BOUNDSACTION;
@@ -235,7 +236,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		return true;
 	}
 	
-	public final static void GameStart()
+	public final void GameStart()
 	{
 		// Read the hi scores
 		ReadHiScores();
@@ -286,7 +287,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		NewGame();
 	}
 	
-	public final static void GameEnd()
+	public final void GameEnd()
 	{
 		// This line may be changed with future music additions
 		gGame.CloseMIDIPlayer();
@@ -1011,16 +1012,41 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 	}
 	
-	public final static boolean ReadHiScores()
+	public final boolean ReadHiScores()
 	{
-		// TODO: Android code to read hi scores from a file
-		return false;
+		try {
+			FileInputStream fis = openFileInput("hiscores.txt");
+			DataInputStream fileIn = new DataInputStream(new BufferedInputStream
+				(fis));
+			for (int i = 0; i < 5; i++) {
+				gHiScores[i] = fileIn.readInt();
+				fileIn.readChar();
+			}
+			fileIn.close();
+			return true;
+		}
+		catch (IOException ex) {
+			return false;
+		}
 	}
 	
-	public final static boolean WriteHiScores()
+	public final boolean WriteHiScores()
 	{
-		// TODO: Android code to write hi scores to a file
-		return false;
+		try {
+			FileOutputStream fos = openFileOutput("hiscores.txt", Context.MODE_PRIVATE);
+			DataOutputStream fileOut = new DataOutputStream(new BufferedOutputStream
+					(fos));
+			for (int i = 0; i < 5; i++) {
+				fileOut.writeInt(gHiScores[i]);
+				fileOut.writeChar('|');
+			}
+			fileOut.close();
+			return true;
+		}
+		catch (IOException ex) {
+			return false;
+		}
+		
 	}
 	
 	@Override
