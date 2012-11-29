@@ -289,7 +289,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public final static void GameEnd()
 	{
 		// This line may be changed with future music additions
-		// gGame.CloseMIDIPlayer();
+		gGame.CloseMIDIPlayer();
 		
 		gGame.CleanupSprites();
 		
@@ -1021,6 +1021,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 	{
 		// TODO: Android code to write hi scores to a file
 		return false;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		GameEnd();
+		finish();
 	}
 	
 }

@@ -184,9 +184,14 @@ public class GameEngine
 		myMidi.start();
 	}
 	
-	public void PauseMIDISong() {}
+	public void PauseMIDISong() {
+		myMidi.pause();
+	}
 	
-	public void CloseMIDIPlayer() {}
+	public void CloseMIDIPlayer() {
+		myMidi.stop();
+		myMidi.release();
+	}
 	
 	// Can add more advanced Android sound methods
 	
