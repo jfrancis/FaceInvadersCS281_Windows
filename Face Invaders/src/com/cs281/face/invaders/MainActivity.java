@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	static public int mGameHeight;
 	static public int mGroundLevel;
 	static public int mButtonAreaHeight = 100;
+	static public int mDirButtonWidth;
 	
 	// Primary Android Activity methods
 	
@@ -56,6 +57,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         mScreenWidth = display.getWidth();
         mScreenHeight = display.getHeight();
         mGameHeight = mScreenHeight - mButtonAreaHeight;
+        
+        mDirButtonWidth = mScreenWidth / 6;
         
         mRenderView = new RenderView(this);
         
@@ -194,7 +197,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static Sprite gCarSprite;
 	
 	public static int gFireInputDelay;
-	public static int gMovementDelay;
 	public static int gNumLives, gScore, gDifficulty;
 	public static boolean gGameOver;
 	public static int gGameOverDelay;
@@ -448,7 +450,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 	}
 	
-	// TODO: This method may need further changes for touch screen input
+	// BUTTON LAYOUT
+	// The buttons take up the bottom 100 pixels of the screen.
+	// Of that, the shoot button takes up the right half.
+	// The left, stop, and right buttons (from left to right) take up equal
+	// portions of the left half.
 	public final static void HandleKeys(float x, float y)
 	{
 		final int missileVelocity = -13;
@@ -458,42 +464,29 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Move the car based upon left/right key presses
 			Point ptVelocity = new Point(gCarSprite.GetVelocity());
 			
-			if ((++gMovementDelay > 2) && x < gCarSprite.mRcPosition.left && y > 400)
-				///*LEFTKEYPRESSED*/false /*TODO: Replace*/)
+			if (inLeftButton(x, y))
 			{
 				// Move left
-				if (ptVelocity.x > 0)
-				{
-					ptVelocity.x = 0;
-				}
-				else
-				{
-					ptVelocity.x = -5;
-				}
+				ptVelocity.x = -5;
 				
 				gCarSprite.SetVelocity(ptVelocity);
-				gMovementDelay = 0;
 			}
-			else if ((++gMovementDelay > 2) && x > gCarSprite.mRcPosition.left && y > 400)
-				///*RIGHTKEYPRESSED*/false /*TODO: Replace*/)
+			else if (inStopButton(x,y))
 			{
-				// Move right
-				if (ptVelocity.x < 0)
-				{
-					ptVelocity.x = 0;
-				}
-				else
-				{
-					ptVelocity.x = 5;
-				}
+				// Stop
+				ptVelocity.x = 0;
 				
 				gCarSprite.SetVelocity(ptVelocity);
-				gMovementDelay = 0;
+			}
+			else if (inRightButton(x,y)) {
+				// Move right
+				ptVelocity.x = 5;
+				
+				gCarSprite.SetVelocity(ptVelocity);
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 2)) 
-				//&& /*SPACEPRESSED*/false /*TODO: Replace*/)
+			if ((++gFireInputDelay > 2) && inShootButton(x,y))
 			{
 				// Fires three sprites in different directions
 				if (gSpreadShot)
@@ -604,6 +597,25 @@ public class MainActivity extends Activity implements OnTouchListener {
 				NewGame();
 			}
 		}
+	}
+	
+	public final static boolean inLeftButton(float x, float y) {
+		return y > mGameHeight && x < mDirButtonWidth;
+	}
+	
+	public final static boolean inStopButton(float x, float y) {
+		return y > mGameHeight &&
+				x >= mDirButtonWidth && x < mDirButtonWidth * 2;
+	}
+	
+	public final static boolean inRightButton(float x, float y) {
+		return y > mGameHeight &&
+				x >= mDirButtonWidth * 2 && x < mDirButtonWidth * 3;
+	}
+	
+	public final static boolean inShootButton(float x, float y) {
+		return y > mGameHeight &&
+				x >= mDirButtonWidth * 3;
 	}
 	
 	public final static boolean SpriteCollision(Sprite spriteHitter,
