@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        
         myMidi = MediaPlayer.create(this, R.raw.megaman_theme);
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -108,6 +109,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     protected void onDestroy()
     {
     	GameEnd();
+    	myMidi.release();
     	
     }
     
@@ -299,6 +301,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// This line may be changed with future music additions
 		//gGame.CloseMIDIPlayer();
 		
+		myMidi.pause();
+		//do not use stop()
 		
 		
 		gGame.CleanupSprites();
