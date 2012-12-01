@@ -6,8 +6,6 @@
 package com.cs281.face.invaders;
 
 import android.graphics.*;
-import android.media.MediaPlayer;
-import java.io.IOException;
 import java.util.Vector;
 
 
@@ -19,7 +17,7 @@ public class GameEngine
 	// Member Variables
 	public int m_iFrameDelay;
 	public boolean  m_bSleep;
-	public MediaPlayer myMidi;
+	//public MediaPlayer myMidi;
 	
 	private Vector<Sprite> m_vSprites = new Vector<Sprite>();
 	
@@ -48,7 +46,7 @@ public class GameEngine
 	{
 		m_iFrameDelay = 50;   // 20 FPS default
 		m_bSleep = true;
-		myMidi = new MediaPlayer();
+		//myMidi = new MediaPlayer();
 		
 	}
 	
@@ -160,7 +158,7 @@ public class GameEngine
 		return null;
 	}
 	
-	public void PlayMIDISong()
+	/*public void PlayMIDISong()
 	{
 		// Select location of music file
 		try {
@@ -182,16 +180,16 @@ public class GameEngine
 		}
 		
 		myMidi.start();
-	}
+	}*/
 	
-	public void PauseMIDISong() {
+	/*public void PauseMIDISong() {
 		myMidi.pause();
-	}
+	}*/
 	
-	public void CloseMIDIPlayer() {
+	/*public void CloseMIDIPlayer() {
 		myMidi.stop();
 		myMidi.release();
-	}
+	}*/
 	
 	// Can add more advanced Android sound methods
 	

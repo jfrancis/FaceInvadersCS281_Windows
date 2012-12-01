@@ -1,6 +1,7 @@
 // John
 package com.cs281.face.invaders;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.graphics.*;
 import android.graphics.Paint.Align;
@@ -35,6 +36,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	private RenderView mRenderView;
 	
+	public static MediaPlayer myMidi;	
 	static public int mScreenWidth;
 	static public int mScreenHeight;
 	static public int mGameHeight;
@@ -48,6 +50,8 @@ public class MainActivity extends Activity implements OnTouchListener {
     // First start of application
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        myMidi = MediaPlayer.create(this, R.raw.megaman_theme);
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -104,6 +108,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     protected void onDestroy()
     {
     	GameEnd();
+    	
     }
     
     public boolean onTouch(View v, MotionEvent event)
@@ -292,7 +297,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public final void GameEnd()
 	{
 		// This line may be changed with future music additions
-		gGame.CloseMIDIPlayer();
+		//gGame.CloseMIDIPlayer();
+		
+		
 		
 		gGame.CleanupSprites();
 		
@@ -324,7 +331,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		{
 			// Resume the background music
 			// TODO: Change with music edits
-			gGame.PlayMIDISong();
+			//gGame.PlayMIDISong();
 		}
 	}
 	
@@ -335,6 +342,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Pause the background music
 			// TODO: Change with music edits
 			//gGame.PauseMIDISong();
+			myMidi.pause();
 		}
 	}
 	
@@ -950,7 +958,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			gCarSprite.SetPosition(mScreenWidth / 2, mGroundLevel);
 			gGame.AddSprite(gCarSprite);
 			
-			gGame.PlayMIDISong();
+			//gGame.PlayMIDISong();
+			myMidi.start();
 		}
 	}
 	
