@@ -108,6 +108,8 @@ public class MainActivity extends Activity implements OnTouchListener {
     // End applicaton
     protected void onDestroy()
     {
+    	super.onDestroy();
+    	
     	GameEnd();
     	myMidi.release();
     	
@@ -164,6 +166,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     			try
     			{
     				mRenderThread.join();
+    				break;
     			}
     			catch (InterruptedException e)
     			{
@@ -301,7 +304,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// This line may be changed with future music additions
 		//gGame.CloseMIDIPlayer();
 		
-		myMidi.pause();
+		if  (myMidi.isPlaying())
+		{
+			myMidi.pause();
+		}
 		//do not use stop()
 		
 		
@@ -336,6 +342,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Resume the background music
 			// TODO: Change with music edits
 			//gGame.PlayMIDISong();
+			myMidi.start();
 		}
 	}
 	
@@ -456,6 +463,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 				// Stop the music and switch to demo mode
 				// TODO: Change with music edits
 				// gGame.PauseMIDISong();
+				myMidi.pause();
+				
 				gDemo = true;
 				NewGame();
 			}
@@ -963,6 +972,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			gGame.AddSprite(gCarSprite);
 			
 			//gGame.PlayMIDISong();
+			myMidi.seekTo(0);
 			myMidi.start();
 		}
 	}
