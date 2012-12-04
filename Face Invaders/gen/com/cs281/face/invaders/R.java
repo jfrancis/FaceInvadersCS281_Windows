@@ -25,11 +25,14 @@ public final class R {
         public static final int lgexplosion=0x7f02000b;
         public static final int missile=0x7f02000c;
         public static final int powerup1=0x7f02000d;
-        public static final int smcar=0x7f02000e;
-        public static final int smexplosion=0x7f02000f;
-        public static final int splash=0x7f020010;
-        public static final int timmy=0x7f020011;
-        public static final int tmissile=0x7f020012;
+        public static final int powerup2=0x7f02000e;
+        public static final int powerup3=0x7f02000f;
+        public static final int powerup4=0x7f020010;
+        public static final int smcar=0x7f020011;
+        public static final int smexplosion=0x7f020012;
+        public static final int splash=0x7f020013;
+        public static final int timmy=0x7f020014;
+        public static final int tmissile=0x7f020015;
     }
     public static final class id {
         public static final int imageView1=0x7f080001;

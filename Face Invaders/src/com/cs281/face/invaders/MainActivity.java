@@ -215,6 +215,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static Bitmap gLgExplosionBitmap;
 	public static Bitmap gGameOverBitmap;
 	public static Bitmap gPowerUpBitmap;
+	public static Bitmap gPowerUpBitmap2;
+	public static Bitmap gPowerUpBitmap3;
+	public static Bitmap gPowerUpBitmap4;
 	public static Bitmap gExplosionPowerBitmap;
 	
 	public static StarryBackground gBackground;
@@ -277,7 +280,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 												  R.drawable.car);
 		gSmCarBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													R.drawable.ic_hamm);
+													R.drawable.smcar);//ic_hamm);
 		gMissileBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 													  R.drawable.missile);
 		gBlobboBitmap = BitmapFactory.decodeResource(mContext.getResources(),
@@ -298,8 +301,16 @@ public class MainActivity extends Activity implements OnTouchListener {
 														  R.drawable.lgexplosion);
 		gGameOverBitmap = BitmapFactory.decodeResource(mContext.getResources(),
 				 									   R.drawable.gameover);
+		
 		gPowerUpBitmap = BitmapFactory.decodeResource(mContext.getResources(),
-													  R.drawable.powerup1);
+													   R.drawable.powerup1);
+		gPowerUpBitmap2 = BitmapFactory.decodeResource(mContext.getResources(),
+													   R.drawable.powerup2);
+		gPowerUpBitmap3 = BitmapFactory.decodeResource(mContext.getResources(),
+				  									   R.drawable.powerup3);
+		gPowerUpBitmap4 = BitmapFactory.decodeResource(mContext.getResources(),
+				  									   R.drawable.powerup4);
+
 		gExplosionPowerBitmap = BitmapFactory.decodeResource(
 												       mContext.getResources(),
 												       R.drawable.esexplosion);
@@ -432,8 +443,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
 			{
-				canvas.drawBitmap(gSmCarBitmap, 25 + 
-								  (gSmCarBitmap.getWidth() * i),
+				canvas.drawBitmap(gSmCarBitmap, 35 + 
+								  ((gSmCarBitmap.getWidth() + 5) * i),
 								  5, null);
 			}
 			

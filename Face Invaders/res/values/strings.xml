@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="app_name">Face Invaders</string>
-    <string name="hello_world">Face Invaders!!!</string>
+    <string name="app_name">DEFCON 281</string>
+    <string name="hello_world">DEFCON 281</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Face Invaders</string>
+    <string name="title_activity_main">DEFCON 281</string>
 
 </resources>
