@@ -101,8 +101,8 @@ public class MainActivity extends Activity implements OnTouchListener {
     {
     	super.onPause();
     	
-    	GameDeactivate();
     	mRenderView.pause();
+    	GameDeactivate();
     }
     
     @Override
@@ -120,7 +120,18 @@ public class MainActivity extends Activity implements OnTouchListener {
     {
     	if (event.getAction() == MotionEvent.ACTION_DOWN)
     	{
-    		HandleKeys(event.getX(), event.getY());
+    		synchronized(mRenderView)
+    		{
+    			try 
+    			{
+					mRenderView.wait();
+	    			HandleKeys(event.getX(), event.getY());
+				} 
+    			catch (InterruptedException e) 
+    			{
+					e.printStackTrace();
+				}
+    		}
     	}
     	
     	return true;
@@ -165,9 +176,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 	    				continue;
 	    			}
 	    			
-	    			Canvas canvas = mHolder.lockCanvas();
-	    			GameCycle(canvas);
-	    			mHolder.unlockCanvasAndPost(canvas);
+	    			synchronized(this)
+	    			{
+		    			Canvas canvas = mHolder.lockCanvas();
+		    			GameCycle(canvas);
+		    			mHolder.unlockCanvasAndPost(canvas);
+		    			
+		    			this.notify();
+	    			}
     			}
     		}
     	}
@@ -792,7 +808,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			
 				Sprite sprite = new Sprite(gExplosionPowerBitmap, rcBounds,
 										   BOUNDSACTION.BA_STOP);
-				sprite.SetNumFrames(4, true);
+				sprite.SetNumFrames(8, true);
 				sprite.SetPosition(rcPos.left, rcPos.top);
 				gGame.AddSprite(sprite);
 			
@@ -841,7 +857,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			int powerupNumber = GetPowerUpNumber(hitteePowerUp ? 
 												 hittee : 
 												 hitter);
-			
+
 			if (powerupNumber == 0)
 			{
 				++gNumLives;
