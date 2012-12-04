@@ -218,6 +218,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static Bitmap gPowerUpBitmap2;
 	public static Bitmap gPowerUpBitmap3;
 	public static Bitmap gPowerUpBitmap4;
+	public static Bitmap gPowerUpBitmap5;
+	public static Bitmap gPowerUpBitmap6;
 	public static Bitmap gExplosionPowerBitmap;
 	
 	public static StarryBackground gBackground;
@@ -310,6 +312,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 				  									   R.drawable.powerup3);
 		gPowerUpBitmap4 = BitmapFactory.decodeResource(mContext.getResources(),
 				  									   R.drawable.powerup4);
+		gPowerUpBitmap5 = BitmapFactory.decodeResource(mContext.getResources(),
+													   R.drawable.ic_action_search);//powerup5);
+		gPowerUpBitmap6 = BitmapFactory.decodeResource(mContext.getResources(),
+													   R.drawable.ic_launcher);//powerup6);
 
 		gExplosionPowerBitmap = BitmapFactory.decodeResource(
 												       mContext.getResources(),
@@ -704,7 +710,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			{
 				Rect rcBounds = new Rect(0, 0, mScreenWidth, mGameHeight);
 				Rect rcPos = spriteHitter.GetPosition();
-				Sprite sprite = new Sprite(gPowerUpBitmap, rcBounds,
+				Sprite sprite = new Sprite(GetPowerUpBitmap(random.nextInt(6)), 
+										   rcBounds,
 										   BOUNDSACTION.BA_DIE);
 				sprite.SetPosition(rcPos.left, rcPos.top);
 				sprite.SetVelocity(0, 4);
@@ -812,9 +819,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 			if (random.nextInt(6) == 4)
 			{
 				rcPos = spriteHitter.GetPosition();
-				Sprite sprite = new Sprite(gPowerUpBitmap, rcBounds, 
+				Sprite sprite = new Sprite(GetPowerUpBitmap(random.nextInt(6)),
+										   rcBounds, 
 										   BOUNDSACTION.BA_DIE);
-				sprite.SetPosition(rcPos.left, rcPos.right);
+				sprite.SetPosition(rcPos.left, rcPos.top);
 				sprite.SetVelocity(0, 4);
 				gGame.AddSprite(sprite);
 			}
@@ -825,10 +833,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		
 		// Power-up hitting car code
-		if ((hitter == gCarBitmap && hittee == gPowerUpBitmap) ||
-			(hitter == gPowerUpBitmap && hittee == gCarBitmap))
+		boolean hitteePowerUp = IsPowerUp(hittee);
+		boolean hitterPowerUp = IsPowerUp(hitter);
+		if ((hitter == gCarBitmap && hitteePowerUp) ||
+			(hitterPowerUp && hittee == gCarBitmap))
 		{
-			int powerupNumber = random.nextInt(6);
+			int powerupNumber = GetPowerUpNumber(hitteePowerUp ? 
+												 hittee : 
+												 hitter);
 			
 			if (powerupNumber == 0)
 			{
@@ -875,7 +887,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				gExplosiveBullet = true;
 			}
 			
-			if (hitter == gPowerUpBitmap)
+			if (hitterPowerUp)
 			{
 				spriteHitter.Kill();
 			}
@@ -1115,10 +1127,73 @@ public class MainActivity extends Activity implements OnTouchListener {
 		
 	}
 	
-	@Override
+	/*@Override
 	public void onBackPressed() {
 		GameEnd();
 		finish();
+	}*/
+	
+	// Returns whether or not a bitmap represents a powerup
+	public static final boolean IsPowerUp(Bitmap bitmap)
+	{
+		return (bitmap == gPowerUpBitmap ||
+				bitmap == gPowerUpBitmap2 ||
+				bitmap == gPowerUpBitmap3 ||
+				bitmap == gPowerUpBitmap4 ||
+				bitmap == gPowerUpBitmap5 ||
+				bitmap == gPowerUpBitmap6);
 	}
 	
+	// Returns powerup bitmap corresponding to powerup number
+	public static final Bitmap GetPowerUpBitmap(int number)
+	{
+		switch (number)
+		{
+		case 0:
+			return gPowerUpBitmap;
+		case 1:
+			return gPowerUpBitmap2;
+		case 2:
+			return gPowerUpBitmap3;
+		case 3:
+			return gPowerUpBitmap4;
+		case 4:
+			return gPowerUpBitmap5;
+		case 5:
+			return gPowerUpBitmap6;
+		default:
+			return null;
+		}
+	}
+	
+	// Returns powerup number based on the given bitmap
+	public static final int GetPowerUpNumber(Bitmap bitmap)
+	{
+		if (bitmap == gPowerUpBitmap)
+		{
+			return 0;
+		} 
+		else if (bitmap == gPowerUpBitmap2)
+		{
+			return 1;
+		}
+		else if (bitmap == gPowerUpBitmap3)
+		{
+			return 2;
+		}
+		else if (bitmap == gPowerUpBitmap4)
+		{
+			return 3;
+		}
+		else if (bitmap == gPowerUpBitmap5)
+		{
+			return 4;
+		}
+		else if (bitmap == gPowerUpBitmap6)
+		{
+			return 5;
+		}
+		
+		return -1;
+	}
 }
