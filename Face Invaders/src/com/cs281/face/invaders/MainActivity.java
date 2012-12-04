@@ -3,6 +3,7 @@ package com.cs281.face.invaders;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.graphics.*;
 import android.graphics.Paint.Align;
 import android.app.Activity;
@@ -130,6 +131,9 @@ public class MainActivity extends Activity implements OnTouchListener {
     	private SurfaceHolder mHolder;
     	private volatile boolean mRunning = false;
     	
+    	private long mFrameDelay = 1000 / 30; // 30 fps 
+    	private long mTickTrigger;
+    	
     	public RenderView(Context context)
     	{
     		super(context);
@@ -145,16 +149,26 @@ public class MainActivity extends Activity implements OnTouchListener {
     	
     	public void run()
     	{
+    		mTickTrigger = SystemClock.elapsedRealtime();
+    		
+    		long tickCount;
+    		
     		while (mRunning)
     		{
-    			if (!mHolder.getSurface().isValid())
+    			// Check the tick count to see if a game cycle has elapsed
+    			tickCount = SystemClock.elapsedRealtime();
+    			if (tickCount > mTickTrigger)
     			{
-    				continue;
+    				mTickTrigger = tickCount + mFrameDelay;
+	    			if (!mHolder.getSurface().isValid())
+	    			{
+	    				continue;
+	    			}
+	    			
+	    			Canvas canvas = mHolder.lockCanvas();
+	    			GameCycle(canvas);
+	    			mHolder.unlockCanvasAndPost(canvas);
     			}
-    			
-    			Canvas canvas = mHolder.lockCanvas();
-    			GameCycle(canvas);
-    			mHolder.unlockCanvasAndPost(canvas);
     		}
     	}
     	
@@ -353,7 +367,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Pause the background music
 			// TODO: Change with music edits
 			//gGame.PauseMIDISong();
-			myMidi.pause();
+			if (myMidi.isPlaying())
+			{
+				myMidi.pause();
+			}
 		}
 	}
 	
@@ -463,7 +480,10 @@ public class MainActivity extends Activity implements OnTouchListener {
 				// Stop the music and switch to demo mode
 				// TODO: Change with music edits
 				// gGame.PauseMIDISong();
-				myMidi.pause();
+				if (myMidi.isPlaying())
+				{
+					myMidi.pause();
+				}
 				
 				gDemo = true;
 				NewGame();
@@ -507,7 +527,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 2) && inShootButton(x,y))
+			if ((++gFireInputDelay > 1) && inShootButton(x,y))
 			{
 				// Fires three sprites in different directions
 				if (gSpreadShot)
