@@ -419,16 +419,20 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// Draw the background
 		gBackground.Draw(canvas);
 		
+		Rect buttonRect = new Rect(0, mGameHeight, 
+								   mScreenWidth, 
+				                   mGameHeight + mButtonAreaHeight);
+		
+		Rect backgroundRect = new Rect(0, 
+									   mGameHeight - gDesertBitmap.getHeight(),
+									   mScreenWidth, mGameHeight);
+		
 		// Clear the button area
 		Paint buttonAreaPaint = new Paint();
 		buttonAreaPaint.setColor(Color.BLACK);
-		canvas.drawRect(new Rect(0, mGameHeight, 
-								 mScreenWidth, 
-								 mGameHeight + mButtonAreaHeight),
-								 buttonAreaPaint);	
+		canvas.drawRect(buttonRect, buttonAreaPaint);	
 		
-		canvas.drawBitmap(gDesertBitmap, 0, 
-						  mGameHeight - gDesertBitmap.getHeight(), null);
+		canvas.drawBitmap(gDesertBitmap, null, backgroundRect, null);
 		
 		// Draw the sprites
 		gGame.DrawSprites(canvas);
@@ -464,7 +468,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 		else // In game
 		{
 			// Draw the button area
-			canvas.drawBitmap(gButtonAreaBitmap, 0, mGameHeight, null);
+			canvas.drawBitmap(gButtonAreaBitmap, null, buttonRect, null);
 			
 			// Draw the score
 			String text = String.format("%d", gScore);
