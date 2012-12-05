@@ -332,9 +332,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gPowerUpBitmap4 = BitmapFactory.decodeResource(mContext.getResources(),
 				  									   R.drawable.powerup4);
 		gPowerUpBitmap5 = BitmapFactory.decodeResource(mContext.getResources(),
-													   R.drawable.ic_action_search);//powerup5);
+													   R.drawable.powerup5);
 		gPowerUpBitmap6 = BitmapFactory.decodeResource(mContext.getResources(),
-													   R.drawable.ic_launcher);//powerup6);
+													   R.drawable.powerup6);
 
 		gExplosionPowerBitmap = BitmapFactory.decodeResource(
 												       mContext.getResources(),
