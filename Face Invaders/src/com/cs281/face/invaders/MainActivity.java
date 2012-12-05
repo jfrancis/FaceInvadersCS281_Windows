@@ -22,6 +22,7 @@ import android.view.WindowManager;
 
 import java.io.*;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.cs281.face.invaders.Sprite.BOUNDSACTION;
 import com.cs281.face.invaders.R;
@@ -44,6 +45,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	static public int mGroundLevel;
 	static public int mButtonAreaHeight = 100;
 	static public int mDirButtonWidth;
+	
+	public static ReentrantLock mLock = new ReentrantLock(true);
 	
 	// Primary Android Activity methods
 	
@@ -120,17 +123,14 @@ public class MainActivity extends Activity implements OnTouchListener {
     {
     	if (event.getAction() == MotionEvent.ACTION_DOWN)
     	{
-    		synchronized(mRenderView)
+    		mLock.lock();
+    		try
     		{
-    			try 
-    			{
-					mRenderView.wait();
-	    			HandleKeys(event.getX(), event.getY());
-				} 
-    			catch (InterruptedException e) 
-    			{
-					e.printStackTrace();
-				}
+	    		HandleKeys(event.getX(), event.getY());
+    		}
+    		finally
+    		{
+    			mLock.unlock();
     		}
     	}
     	
@@ -166,24 +166,27 @@ public class MainActivity extends Activity implements OnTouchListener {
     		
     		while (mRunning)
     		{
-    			// Check the tick count to see if a game cycle has elapsed
-    			tickCount = SystemClock.elapsedRealtime();
-    			if (tickCount > mTickTrigger)
+    			mLock.lock();
+    			try
     			{
-    				mTickTrigger = tickCount + mFrameDelay;
-	    			if (!mHolder.getSurface().isValid())
+	    			// Check the tick count to see if a game cycle has elapsed
+	    			tickCount = SystemClock.elapsedRealtime();
+	    			if (tickCount > mTickTrigger)
 	    			{
-	    				continue;
-	    			}
-	    			
-	    			synchronized(this)
-	    			{
+	    				mTickTrigger = tickCount + mFrameDelay;
+		    			if (!mHolder.getSurface().isValid())
+		    			{
+		    				continue;
+		    			}
+		    			
 		    			Canvas canvas = mHolder.lockCanvas();
 		    			GameCycle(canvas);
 		    			mHolder.unlockCanvasAndPost(canvas);
-		    			
-		    			this.notify();
 	    			}
+    			}
+    			finally
+    			{
+    				mLock.unlock();
     			}
     		}
     	}
