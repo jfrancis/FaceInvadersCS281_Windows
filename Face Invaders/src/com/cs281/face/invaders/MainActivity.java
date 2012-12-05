@@ -240,6 +240,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static Bitmap gPowerUpBitmap5;
 	public static Bitmap gPowerUpBitmap6;
 	public static Bitmap gExplosionPowerBitmap;
+	public static Bitmap gButtonAreaBitmap;
 	
 	public static StarryBackground gBackground;
 	public static Sprite gCarSprite;
@@ -339,6 +340,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		gExplosionPowerBitmap = BitmapFactory.decodeResource(
 												       mContext.getResources(),
 												       R.drawable.esexplosion);
+		gButtonAreaBitmap = BitmapFactory.decodeResource(
+													   mContext.getResources(),
+													   R.drawable.buttonzone);
 		
 		gBackground = new StarryBackground(mScreenWidth, mGameHeight, 100, 50);
 		
@@ -459,6 +463,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		else // In game
 		{
+			// Draw the button area
+			canvas.drawBitmap(gButtonAreaBitmap, 0, mGameHeight, null);
+			
 			// Draw the score
 			String text = String.format("%d", gScore);
 			textPaint.setTextAlign(Align.RIGHT);
