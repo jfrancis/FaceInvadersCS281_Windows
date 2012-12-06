@@ -972,6 +972,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			{
 				// Play the game over sound
 				// TODO: Android music code
+				myMidi.pause();
 				myMidi2.seekTo(0);
 				myMidi2.start();
 				
