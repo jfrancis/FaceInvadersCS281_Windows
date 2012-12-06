@@ -473,13 +473,13 @@ public class MainActivity extends Activity implements OnTouchListener {
 			// Draw the score
 			String text = String.format("%d", gScore);
 			textPaint.setTextAlign(Align.RIGHT);
-			canvas.drawText(text, 25, 10, 
+			canvas.drawText(text, 45, 10, 
 					        textPaint);
 			
 			// Draw the number of remaining lives (cars)
 			for (int i = 0; i < gNumLives; i++)
 			{
-				canvas.drawBitmap(gSmCarBitmap, 35 + 
+				canvas.drawBitmap(gSmCarBitmap, 55 + 
 								  ((gSmCarBitmap.getWidth() + 5) * i),
 								  5, null);
 			}
@@ -574,7 +574,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			}
 			
 			// Fire missiles based upon button press
-			if ((++gFireInputDelay > 1) && inShootButton(x,y))
+			if ((++gFireInputDelay > 0) && inShootButton(x,y))
 			{
 				// Fires three sprites in different directions
 				if (gSpreadShot)
