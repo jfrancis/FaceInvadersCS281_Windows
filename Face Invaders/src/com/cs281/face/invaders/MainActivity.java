@@ -495,8 +495,6 @@ public class MainActivity extends Activity implements OnTouchListener {
 						mScreenWidth / 2 - gGameOverBitmap.getWidth() / 2,
 					    mGameHeight / 2 - gGameOverBitmap.getHeight() / 2,
 					    null);
-				myMidi2.seekTo(0);
-				myMidi2.start();
 			}
 			
 		}
@@ -974,6 +972,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			{
 				// Play the game over sound
 				// TODO: Android music code
+				myMidi2.seekTo(0);
+				myMidi2.start();
 				
 				gGameOver = true;
 				gGameOverDelay = 150;
