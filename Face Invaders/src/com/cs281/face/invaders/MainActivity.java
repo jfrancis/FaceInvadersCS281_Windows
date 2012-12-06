@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         mScreenHeight = display.getHeight();
         mGameHeight = mScreenHeight - mButtonAreaHeight;
         
-        mDirButtonWidth = mScreenWidth / 6;
+        mDirButtonWidth = mScreenWidth / 3;
         
         mRenderView = new RenderView(this);
         
