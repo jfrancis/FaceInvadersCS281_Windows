@@ -58,6 +58,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         
         
         myMidi = MediaPlayer.create(this, R.raw.megaman_theme);
+        myMidi.setLooping(true);
+        
         myMidi2 = MediaPlayer.create(this, R.raw.yougetnothing);
         
         
