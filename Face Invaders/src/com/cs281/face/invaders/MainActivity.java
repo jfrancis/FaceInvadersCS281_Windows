@@ -38,7 +38,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	private RenderView mRenderView;
 	
-	public static MediaPlayer myMidi;	
+	public static MediaPlayer myMidi; //music
+	public static MediaPlayer myMidi2; //yougetnothing
 	static public int mScreenWidth;
 	static public int mScreenHeight;
 	static public int mGameHeight;
@@ -57,6 +58,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         
         
         myMidi = MediaPlayer.create(this, R.raw.megaman_theme);
+        myMidi2 = MediaPlayer.create(this, R.raw.yougetnothing);
+        
         
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -116,6 +119,7 @@ public class MainActivity extends Activity implements OnTouchListener {
     	
     	GameEnd();
     	myMidi.release();
+    	myMidi2.release();
     	
     }
     
@@ -491,6 +495,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 						mScreenWidth / 2 - gGameOverBitmap.getWidth() / 2,
 					    mGameHeight / 2 - gGameOverBitmap.getHeight() / 2,
 					    null);
+				myMidi2.seekTo(0);
+				myMidi2.start();
 			}
 			
 		}
