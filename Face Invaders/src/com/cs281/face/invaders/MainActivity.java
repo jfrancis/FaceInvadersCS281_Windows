@@ -686,7 +686,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			else if (gGameOver)
 			{
 				// Start a new game
-				NewGame();
+				//NewGame();
 			}
 		}
 	}
