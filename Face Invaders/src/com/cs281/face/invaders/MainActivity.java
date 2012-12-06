@@ -540,9 +540,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 	
 	// BUTTON LAYOUT
 	// The buttons take up the bottom 100 pixels of the screen.
-	// Of that, the shoot button takes up the right half.
-	// The left, stop, and right buttons (from left to right) take up equal
-	// portions of the left half.
+	// The left, shoot, and right buttons each take up a third of the screen,
+	// in that order from left to right.
 	public final static void HandleKeys(float x, float y)
 	{
 		final int missileVelocity = -13;
@@ -554,21 +553,22 @@ public class MainActivity extends Activity implements OnTouchListener {
 			
 			if (inLeftButton(x, y))
 			{
-				// Move left
-				ptVelocity.x = -5;
-				
-				gCarSprite.SetVelocity(ptVelocity);
-			}
-			else if (inStopButton(x,y))
-			{
-				// Stop
-				ptVelocity.x = 0;
+				// Move left or stop
+				if (ptVelocity.x > 0) {
+					ptVelocity.x = 0;
+				} else {
+					ptVelocity.x = -5;
+				}
 				
 				gCarSprite.SetVelocity(ptVelocity);
 			}
 			else if (inRightButton(x,y)) {
-				// Move right
-				ptVelocity.x = 5;
+				// Move right or stop
+				if (ptVelocity.x < 0) {
+					ptVelocity.x = 0;
+				} else {
+					ptVelocity.x = 5;
+				}
 				
 				gCarSprite.SetVelocity(ptVelocity);
 			}
@@ -691,19 +691,14 @@ public class MainActivity extends Activity implements OnTouchListener {
 		return y > mGameHeight && x < mDirButtonWidth;
 	}
 	
-	public final static boolean inStopButton(float x, float y) {
+	public final static boolean inShootButton(float x, float y) {
 		return y > mGameHeight &&
 				x >= mDirButtonWidth && x < mDirButtonWidth * 2;
 	}
 	
 	public final static boolean inRightButton(float x, float y) {
 		return y > mGameHeight &&
-				x >= mDirButtonWidth * 2 && x < mDirButtonWidth * 3;
-	}
-	
-	public final static boolean inShootButton(float x, float y) {
-		return y > mGameHeight &&
-				x >= mDirButtonWidth * 3;
+				x >= mDirButtonWidth * 2;
 	}
 	
 	public final static boolean SpriteCollision(Sprite spriteHitter,
